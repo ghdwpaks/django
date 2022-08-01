@@ -1,0 +1,43 @@
+
+<style>
+    .menu {
+        text-decoration: none;
+        font-size: 25px;
+        color : black;
+        font-weight: bold;
+        margin-right: 30px;
+    }
+    .app{
+        text-decoration: none;
+        font-size: 25px;
+        color : rgb(0, 38, 255);
+        font-weight: bold;
+        margin-right: 30px;
+    }
+    .app:hover{
+        color:black;
+    }
+    .menu:hover{
+        color : rgba(7, 73, 253, 0.863);
+    }
+</style>
+{% if user.is_authenticated %}
+    <a href="{% url 'dwm:index' %}" class="menu">HOME</a>
+    <a href="{% url 'dwm:logout' %}" class="menu">LOGOUT</a>
+{% else %}
+    <a href="{% url 'dwm:index' %}" class="menu">HOME</a>
+    <a href="{% url 'dwm:login' %}" class="menu">LOGIN</a>
+    <a href="{% url 'dwm:join' %}" class="menu">JOIN</a>
+{% endif %}
+
+{% if user == "AnonymousUser" %}
+    <h5>로그인이 필요합니다.</h5>
+    <hr>
+{% else %}
+    <h5>접속중인 계정 <b>{{ user }}</b></h5>
+    <hr>
+{% endif %}
+
+{% block con %}
+
+{% endblock %}
