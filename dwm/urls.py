@@ -1,6 +1,5 @@
-
-from django.contrib import admin
 from django.urls import path
+
 from . import views
 app_name = "dwm"
 urlpatterns = [
@@ -8,5 +7,5 @@ urlpatterns = [
     path('join/',views.join,name="join"),
     path('login/',views.userlogin,name="login"),
     path('logout/',views.userlogout,name="logout"),
-
+    path('mod/',views.mod,name="mod")
 ]

@@ -1,12 +1,22 @@
 {% extends 'header.html' %}
 {% block con %}
-    <h1><b>LOGIN PAGE</b></h1>
+    <h1 style="margin-left: 20px;"><b>LOGIN PAGE</b></h1>
 
     <form method="post">
         {% csrf_token %}
-        <b> : </b><input type="text" name="uname" placeholder="INPUT YOUR USERNAME" size="30"><br><br>
-        <input type="password" name="upass" placeholder="INPUT YOUR PASSWORD" size="30"><br><br>
-        <button>로그인</button>
+        <table >
+            <tr>
+                <td style="padding: 20px;"><b>USERID</b></td>
+                <td><input type="text" name="uname" placeholder="INPUT YOUR USERNAME" size="30"></td>
+            </tr>
+            <tr>
+                <td style="padding: 20px;"><b>Password</b></td>
+                <td><input type="password" name="upass" placeholder="INPUT YOUR PASSWORD" size="30"></td>
+            </tr>
+            <tr>
+                <td rowspan="2" style="padding: 20px;"><button>로그인</button></td>
+            </tr>
+        </table>
     </form>
 
 {% endblock %}

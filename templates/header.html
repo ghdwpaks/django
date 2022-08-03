@@ -6,6 +6,7 @@
         color : black;
         font-weight: bold;
         margin-right: 30px;
+        padding-right: 30px;
     }
     .app{
         text-decoration: none;
@@ -22,21 +23,32 @@
     }
 </style>
 {% if user.is_authenticated %}
-    <a href="{% url 'dwm:index' %}" class="menu">HOME</a>
-    <a href="{% url 'dwm:logout' %}" class="menu">LOGOUT</a>
+    <table border="0">
+
+        <tr>
+            <td><a href="{% url 'dwm:index' %}" class="menu" >HOME</a></td>
+            <td><a href="{% url 'dwm:mod' %}" class="menu">MOD</a></td>
+            <td><a href="{% url 'dwm:logout' %}" class="menu">LOGOUT</a></td>
+            <td rowspan="4"><img src="{{ user.getphoto }}" height="200px"></td>
+        </tr>
+        <tr>
+            <td colspan="3"><h4>접속중인 계정 : <b>{{ user.nickname }}</b></h4></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <br>
 {% else %}
     <a href="{% url 'dwm:index' %}" class="menu">HOME</a>
     <a href="{% url 'dwm:login' %}" class="menu">LOGIN</a>
     <a href="{% url 'dwm:join' %}" class="menu">JOIN</a>
-{% endif %}
-
-{% if user == "AnonymousUser" %}
+    <br>
     <h5>로그인이 필요합니다.</h5>
-    <hr>
-{% else %}
-    <h5>접속중인 계정 <b>{{ user }}</b></h5>
-    <hr>
 {% endif %}
+<hr>
 
 {% block con %}
 

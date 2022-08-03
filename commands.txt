@@ -1,6 +1,7 @@
 pip install django-mathfilters
 python -m pip install Pillow
 python.exe -m pip install --upgrade pip
+pip install pilkit django-imagekit
 
 django-admin startproject config . 
 python manage.py startapp dwm

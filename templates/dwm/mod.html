@@ -1,0 +1,68 @@
+{% extends 'header.html' %}
+{% block con %}
+    <h1>UPDATE PAGE</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <th>COLUMN</th>
+                <th>NOW</th>
+                <th>AFTER</th>
+            </tr>
+            <tr>
+                <th>USERNAME</th>
+                <td><h3>{{user.username}}</h3></td>
+                <td><input type="text" name="uname" value="{{user.username}}" disabled></td>
+            </tr>
+            <tr>
+                <th>NICKNAME</th>
+                <td><h3>{{user.nickname}}</h3></td>
+                <td><input type="text" value="{{ user.nickname }}" name="nickname"></td>
+            </tr>
+            <tr>
+                <th>EMAIL</th>
+                <td><h3>{{user.email}}</h3></td>
+                <td><input type="text" value="{{ user.email }}" name="umail"></td>
+            </tr>
+            <tr>
+                <th>PROFILE IMG</th>
+                <td><img src="{{ user.getphoto }}" width="300px"></td>
+                <!-- <td colspan="2"><input type="file" name="upic"> </td> -->
+                <td><input type="file" name="upic"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>COMMENT</b><br><p>{{ user.comment }}</p><br><textarea cols="40" rows="5" name="ucomm">{{ user.comment }}</textarea></td>
+            </tr>
+        </table>
+        <button>정보수정</button>
+    </form>
+    <hr>
+    
+    <!-- <img src="{{ user.getphoto }}"> -->
+    <br><br><br>
+    <!-- <img src="/media/media/media/usrprophoto/81998372_p0.jpg" width="100px"> -->
+    <!-- <img src="media/media/media/usrprophoto/81998372_p0.jpg" width="100px"> -->
+    <!-- <img src="/media/media/usrprophoto/81998372_p0.jpg" width="100px"> -->
+    <!-- <img src="media/media/usrprophoto/81998372_p0.jpg" width="100px"> -->
+
+    <!-- <img src="/media/usrprophoto/81998372_p0.jpg" width="100px"> -->
+
+    <!-- <img src="media/usrprophoto/81998372_p0.jpg" width="100px"> -->
+    <!-- <img src="/usrprophoto/81998372_p0.jpg" width="100px"> -->
+    <!-- <img src="usrprophoto/81998372_p0.jpg" width="100px"> -->
+    <!-- <img src="../usrprophoto/81998372_p0.jpg" width="100px"> -->
+    <!-- <img src="/../usrprophoto/81998372_p0.jpg" width="100px"> -->
+    <!-- <img src="../../usrprophoto/81998372_p0.jpg" width="100px"> -->
+    <!-- <img src="/../../usrprophoto/81998372_p0.jpg" width="100px"> -->
+    <!-- <img src="../../../usrprophoto/81998372_p0.jpg" width="100px"> -->
+    <!-- <img src="/../../../usrprophoto/81998372_p0.jpg" width="100px"> -->
+    <!-- <img src="../../../../usrprophoto/81998372_p0.jpg" width="100px"> -->
+
+
+    <style>
+        th, td{
+            padding: 20px;
+        }
+    </style>
+{% endblock %}
