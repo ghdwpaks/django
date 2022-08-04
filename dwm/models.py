@@ -20,3 +20,4 @@ class User(AbstractUser) :
             print("self.photo.url :",self.photo.url)
             return self.photo.url
         return "/media/no.jpg"
+
