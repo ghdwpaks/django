@@ -23,5 +23,6 @@ print("dwm urls views settings.MEDIA_ROOT :",settings.MEDIA_ROOT)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('dwm/',include('dwm.urls')),
-    path('shop/',include('shop.urls'))
+    path('shop/',include('shop.urls')),
+    path('board/',include('board.urls'))
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

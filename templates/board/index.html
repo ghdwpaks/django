@@ -1,0 +1,42 @@
+{% extends 'header.html' %}
+{% block con %}
+<table border="0" style="width: 100%;">
+    <tr>
+        <th>NO</th>
+        <th>THUMNAIL</th>
+        <th>SUBJECT</th>
+        <th>SUMMARY</th>
+        <th>WRITER</th>
+    </tr>   
+    {% for i in b %}
+    
+        <tr>
+            
+                <td>{{ i.id }}</td>
+                <td ><a href="{% url 'board:index' %}"><img src="{{ i.getthum }}" height="200px"></a></td>
+                <td>{{ i.name }}</td>
+                <td>{{ i.comment|truncatewords:5 }}</td>
+                <td>{{ i.writernick }}</td>
+        </tr>
+    
+    {% empty %}
+        <tr>
+        {% if kw %}
+                <td colspan="5">검색결과가 없습니다.. 🤸🏻‍♀️</td>
+        {% else %}
+                <td colspan="5">첫번째 게시글을 작성해주세요 🙏🏻</td>
+        {% endif %} 
+        </tr>
+    {% endfor %}
+</table>
+<style>
+    td {
+        text-align: left;
+        padding: 30px;
+    }
+    th {
+        text-align: left;
+        padding-left: 30px;
+    }
+</style>
+{% endblock %}

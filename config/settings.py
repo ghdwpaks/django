@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'dwm.apps.DwmConfig',
     'shop.apps.ShopConfig',
+    'board.apps.BoardConfig',
     'mathfilters',
     'imagekit'
 ]

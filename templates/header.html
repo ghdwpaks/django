@@ -27,9 +27,10 @@
 
         <tr>
             <td><a href="{% url 'dwm:index' %}" class="menu" >HOME</a></td>
-            <td><a href="{% url 'dwm:mod' %}" class="menu">MOD</a></td>
+            <td><a href="{% url 'board:index' %}" class="menu" >BOARD</a></td>
             <td><a href="{% url 'shop:index' %}" class="menu">SHOP</a></td>
             <td rowspan="4"><img src="{{ user.getphoto }}" height="200px"></td>
+            <td><a href="{% url 'dwm:mod' %}" class="menu">MOD</a></td>
             <td><a href="{% url 'dwm:logout' %}" class="menu">LOGOUT</a></td>
         </tr>
         <tr>
@@ -43,11 +44,8 @@
 {% else %}
         <tr>
             <td><a href="{% url 'dwm:index' %}" class="menu">HOME</a></td>
-        </tr>
-        <tr>
+            <td><a href="{% url 'board:index' %}" class="menu" >BOARD</a></td>
             <td><a href="{% url 'dwm:login' %}" class="menu">LOGIN</a></td>
-        </tr>
-        <tr>
             <td><a href="{% url 'dwm:join' %}" class="menu">JOIN</a></td>
         </tr>
     <br>
