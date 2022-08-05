@@ -1,5 +1,6 @@
 {% extends 'header.html' %}
 {% block con %}
+{% load mathfilters %}
 <a href="{% url 'board:create' %}"><h1>CREATE CONTENT</h1></a>
 <table border="0" style="width: 100%;">
     <tr>
@@ -37,9 +38,36 @@
         </tr>
     {% endfor %}
 </table>
+{% if b.has_previous %}
+    <a href="{% url 'board:index' %}?page=1&kw={{kw}}&cate={{cate}}"><button class="btn btn-light" >처음</button></a>
+    <a href="{% url 'board:index' %}?page={{ b.previous_page_number }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light" >이전</button></a>
+{% else %}
+    <button class="btn btn-light"  disabled>처음</button>
+    <button class="btn btn-light" disabled>이전</button>
+{% endif %}
+{% for i in b.paginator.page_range %}
+    {% if i >= b.number|sub:5 and b.number|add:4 >= i %}
+        <a href="{% url 'board:index' %}?page={{i}}&kw={{kw}}&cate={{cate}}">
+            <button {% if i == b.number %} disabled {% endif %} class="btn btn-light">{{ i }}</button>
+        </a>
+    {% endif %}
+{% endfor %}
+
+{% if b.has_next %}
+    <a href="{% url 'board:index' %}?page={{ b.next_page_number }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light">다음</button></a>
+    <a href="{% url 'board:index' %}?page={{ b.paginator.num_pages }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light">마지막</button></a>
+{% else %}
+    <button class="btn btn-light" disabled>다음</button>
+    <button class="btn btn-light" disabled>마지막</button>
+{% endif %}
+<div style="height: 60%;"></div>
 <style>
     h1 {
         padding: 30px;
+    }
+    button{
+        margin-left: 10px;
+        margin-right: 10px;
     }
     .btd {
         text-align: left;
