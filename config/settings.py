@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'shop.apps.ShopConfig',
     'board.apps.BoardConfig',
     'mathfilters',
-    'imagekit'
+    'imagekit',
 ]
 AUTH_USER_MODEL = "dwm.User"
 ROOT_URLCONF = 'config.urls'

@@ -1,42 +1,49 @@
 {% extends 'header.html' %}
 {% block con %}
+<a href="{% url 'board:create' %}"><h1>CREATE CONTENT</h1></a>
 <table border="0" style="width: 100%;">
     <tr>
-        <th>NO</th>
-        <th>THUMNAIL</th>
-        <th>SUBJECT</th>
-        <th>SUMMARY</th>
-        <th>WRITER</th>
+        <th class="btd" style="width: 5%;">NO</th>
+        <th class="btd" style="width: 25%;">THUMNAIL</th>
+        <th class="btd" style="width: 15%;">SUBJECT</th>
+        <th class="btd" style="width: 25%;">SUMMARY</th>
+        <th class="btd" style="width: 30%;" colspan="2">WRITER</th>
     </tr>   
     {% for i in b %}
     
         <tr>
-            
-                <td>{{ i.id }}</td>
-                <td ><a href="{% url 'board:index' %}"><img src="{{ i.getthum }}" height="200px"></a></td>
-                <td>{{ i.name }}</td>
-                <td>{{ i.comment|truncatewords:5 }}</td>
-                <td>{{ i.writernick }}</td>
+                <td class="btd">{{ i.id }}</td>
+                <td class="btd"><a href="{% url 'board:index' %}"><img src="{{ i.getthum }}" height="150px"></a></td>
+                <td class="btd">{{ i.name|truncatewords:8 }}</td>
+                <td class="btd">{{ i.comment|truncatewords:5 }}</td>
+                <td class="btd">{{ i.writernick }}</td>
+                
+                {% for j in phs %}
+                    {% for key, value in j.items %}
+                        {% if key == i.writername %}
+                        <td class="btd"><img src="{{ value }}" width="100px"></td>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
         </tr>
     
     {% empty %}
         <tr>
         {% if kw %}
-                <td colspan="5">검색결과가 없습니다.. 🤸🏻‍♀️</td>
+                <td colspan="5">검색결과가 없습니다</td>
         {% else %}
-                <td colspan="5">첫번째 게시글을 작성해주세요 🙏🏻</td>
+                <td colspan="5">첫번째 게시글을 작성해주세요</td>
         {% endif %} 
         </tr>
     {% endfor %}
 </table>
 <style>
-    td {
-        text-align: left;
+    h1 {
         padding: 30px;
     }
-    th {
+    .btd {
         text-align: left;
-        padding-left: 30px;
+        padding: 30px;
     }
 </style>
 {% endblock %}
