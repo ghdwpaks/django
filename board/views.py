@@ -87,21 +87,19 @@ def create(req):
         if req.user.username == None or req.user.username == "" :
             return redirect("board:index")
         else :
-            return render(req, "board/create.html")
-
-        un = req.user.username
-        uni = req.user.nickname
-        thum = req.FILES.get("thum")
-        n = req.POST.get("name")
-        c = req.POST.get("com")
-        print("board views create post")
-        print("un :",un)
-        print("uni :",uni)
-        print("thum :",thum)
-        print("n :",n)
-        print("c :",c)
-        Board(name=n, comment=c, writername=un,thumbnail=thum,writernick=uni,credate=timezone.now()).save()
-        return redirect("board:index")
+            un = req.user.username
+            uni = req.user.nickname
+            thum = req.FILES.get("thum")
+            n = req.POST.get("name")
+            c = req.POST.get("com")
+            print("board views create post")
+            print("un :",un)
+            print("uni :",uni)
+            print("thum :",thum)
+            print("n :",n)
+            print("c :",c)
+            Board(name=n, comment=c, writername=un,thumbnail=thum,writernick=uni,credate=timezone.now()).save()
+            return redirect("board:index")
     
     elif req.method == "GET":
         print("board views create get")

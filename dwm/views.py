@@ -53,7 +53,7 @@ def mod(req) :
         print("dwm views mod tid :",tid)
         u = User.objects.get(id=tid)
         
-        uni = req.POST.get("nickname")
+        uni = req.POST.get("nickname")                                  
         print("dwm views mod uni :",uni)
         print("dwm views mod type(uni) :",uni)
 
