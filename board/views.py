@@ -84,12 +84,17 @@ def index(req):
 
 def create(req):
     if req.method == "POST":
+        if req.user.username == None or req.user.username == "" :
+            return redirect("board:index")
+        else :
+            return render(req, "board/create.html")
+
         un = req.user.username
         uni = req.user.nickname
         thum = req.FILES.get("thum")
         n = req.POST.get("name")
         c = req.POST.get("com")
-        print("board views create")
+        print("board views create post")
         print("un :",un)
         print("uni :",uni)
         print("thum :",thum)
@@ -97,8 +102,15 @@ def create(req):
         print("c :",c)
         Board(name=n, comment=c, writername=un,thumbnail=thum,writernick=uni,credate=timezone.now()).save()
         return redirect("board:index")
+    
+    elif req.method == "GET":
+        print("board views create get")
+        print("board views create get req.user.username :",req.user.username)
+        if req.user.username == None or req.user.username == "" :
+            return redirect("board:index")
+        else :
+            return render(req, "board/create.html")
 
-    return render(req, "board/create.html")
 
 def detail(req, tr) :
     print("board views detail tr :",tr)

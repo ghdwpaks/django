@@ -3,8 +3,11 @@
 {% load mathfilters %}
 <div  align="left" style=" margin-left: 1%;">
 
-
+{% if user.is_authenticated %}
 <div style="width: 30%; margin-left: 1%;"><a href="{% url 'board:create' %}"><h1>CREATE CONTENT</h1></a></div>
+{% else %}
+{% endif %}
+
 <br>
 <table class="table" border="0" style="width: 80%;">
     <tr>
