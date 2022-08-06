@@ -97,3 +97,23 @@ def create(req):
         return redirect("board:index")
 
     return render(req, "board/create.html")
+
+def detail(req, tr) :
+    print("board views detail tr :",tr)
+    #tr : target raw
+    b = Board.objects.get(id=tr)
+    #print("board views detail b :",b)
+    #print("board views detail type(b) :",type(b))
+    #print("board views detail b.id :",b.id)
+    #print("board views detail b.writernick :",b.writernick)
+    #print("board views detail b.credate :",b.credate)
+    #print("board views detail b.name :",b.name)
+    #print("board views detail b.thumbnail :",b.thumbnail)
+    #print("board views detail b.comment :",b.comment)
+    b.hits = b.hits+1
+    b.save()
+    
+    context = {
+        "b" : b
+    }
+    return render(req, "board/detail.html",context)

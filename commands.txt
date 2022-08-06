@@ -1,4 +1,6 @@
 pip install django-mathfilters
+pip install django-imagekit
+pip install crispy-forms-gds
 python -m pip install Pillow
 python.exe -m pip install --upgrade pip
 pip install pilkit django-imagekit

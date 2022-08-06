@@ -1,0 +1,42 @@
+{% extends 'header.html' %}
+{% block con %}
+{% load mathfilters %}
+
+<div align="left" style=" margin-left: 1%;">
+
+    <table class="table table-bordered" border="0" style="width: 60%;">
+        <tr>
+            <th  class="btd" style="width: 25%">작성자 : </th>
+            <td  class="btd" style="width: 25%">{{ b.writernick }}</td>
+            <th  class="btd" style="width: 25%">작성일자 : </th>
+            <td  class="btd" style="width: 25%">{{ b.credate }}</td>
+        </tr>   
+        <tr>
+            <td class="btd" colspan="2" >{{ b.name }}</td> 
+            <td class="btd" colspan="2" rowspan="4"><img style="height: 300px;" src="{{ b.getthum }}" height="150px"></td> 
+        </tr>
+        <tr>
+            <td class="btd" colspan="2" rowspan="3">{{ b.comment }}</td>
+        </tr>
+        <tr></tr>
+        <tr></tr>
+        <tr>
+            <th class="btd">조회수 : </th>
+            <td class="btd">{{ b.hits }}</td>
+            <td class="btd" colspan="2"></td>
+        </tr>
+    </table>
+    <input type="button" value="BACK" onclick="history_back()">
+</div>
+<script>
+    function history_back() {
+        history.back();
+    }
+</script>
+<style>
+    .btd {
+        text-align: left;
+        padding: 30px;
+    }
+</style>
+{% endblock %}

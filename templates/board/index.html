@@ -1,28 +1,34 @@
 {% extends 'header.html' %}
 {% block con %}
 {% load mathfilters %}
-<a href="{% url 'board:create' %}"><h1>CREATE CONTENT</h1></a>
-<table border="0" style="width: 100%;">
+<div  align="left" style=" margin-left: 1%;">
+
+
+<div style="width: 30%; margin-left: 1%;"><a href="{% url 'board:create' %}"><h1>CREATE CONTENT</h1></a></div>
+<br>
+<table class="table" border="0" style="width: 80%;">
     <tr>
-        <th class="btd" style="width: 5%;">NO</th>
-        <th class="btd" style="width: 25%;">THUMNAIL</th>
-        <th class="btd" style="width: 15%;">SUBJECT</th>
-        <th class="btd" style="width: 25%;">SUMMARY</th>
-        <th class="btd" style="width: 30%;" colspan="2">WRITER</th>
+        <th class="text-center align-middle btd" style="width: 5%;">NO</th>
+        <th class="text-center align-middle btd" style="width: 25%;">THUMNAIL</th>
+        <th class="text-center align-middle btd" style="width: 15%;">SUBJECT</th>
+        <th class="text-center align-middle btd" style="width: 15%;">SUMMARY</th>
+        <th class="text-center align-middle btd" style="width: 10%;">HITS</th>
+        <th class="text-center align-middle btd" style="width: 30%;" colspan="2">WRITER</th>
     </tr>   
     {% for i in b %}
     
         <tr>
-                <td class="btd">{{ i.id }}</td>
-                <td class="btd"><a href="{% url 'board:index' %}"><img src="{{ i.getthum }}" height="150px"></a></td>
-                <td class="btd">{{ i.name|truncatewords:8 }}</td>
-                <td class="btd">{{ i.comment|truncatewords:5 }}</td>
-                <td class="btd">{{ i.writernick }}</td>
+                <td class="text-center align-middle btd">{{ i.id }}</td> 
+                <td class="text-center align-middle btd"><a href="{% url 'board:detail' i.id %}"><img src="{{ i.getthum }}" height="150px"></a></td>
+                <td class="text-center align-middle btd">{{ i.name|truncatewords:8 }}</td>
+                <td class="text-center align-middle btd">{{ i.comment|truncatewords:5 }}</td>
+                <td class="text-center align-middle btd">{{ i.hits }}</td>
+                <td class="text-center align-middle btd">{{ i.writernick }}</td>
                 
                 {% for j in phs %}
                     {% for key, value in j.items %}
                         {% if key == i.writername %}
-                        <td class="btd"><img src="{{ value }}" width="100px"></td>
+                        <td class="align-middle btd"><img src="{{ value }}" width="100px"></td>
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
@@ -60,10 +66,11 @@
     <button class="btn btn-light" disabled>다음</button>
     <button class="btn btn-light" disabled>마지막</button>
 {% endif %}
+</div>
 <div style="height: 60%;"></div>
 <style>
     h1 {
-        padding: 30px;
+        padding: 10px;
     }
     button{
         margin-left: 10px;
@@ -71,7 +78,7 @@
     }
     .btd {
         text-align: left;
-        padding: 30px;
+        padding: 10px;
     }
 </style>
 {% endblock %}
