@@ -7,5 +7,6 @@ urlpatterns = [
     path('join/',views.join,name="join"),
     path('login/',views.userlogin,name="login"),
     path('logout/',views.userlogout,name="logout"),
-    path('mod/',views.mod,name="mod")
+    path('mod/',views.mod,name="mod"),
+    path('',views.gotoindex,name="top")
 ]

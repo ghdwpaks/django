@@ -6,6 +6,8 @@ from django.utils import timezone
 from dwm.models import User
 # Create your views here.
 
+def gotoindex(req) :
+    return redirect("board:index")
     
 def index(req):
     global User

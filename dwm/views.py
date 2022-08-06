@@ -5,6 +5,9 @@ from .models import User
 
 # Create your views here.
 
+def gotoindex(req) :
+    return redirect("dwm:index")
+
 def index(req) :
     print("type(req) :",type(req))
     return render(req,"dwm/index.html")

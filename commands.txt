@@ -11,3 +11,9 @@ python manage.py runserver
 python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
+
+
+python3 -m pip install Pillow
+pip install django-mathfilters
+pip install django-imagekit
+pip install pilkit django-imagekit

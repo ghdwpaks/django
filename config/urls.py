@@ -24,5 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('dwm/',include('dwm.urls')),
     path('shop/',include('shop.urls')),
-    path('board/',include('board.urls'))
+    path('board/',include('board.urls')),
+    path('',include('dwm.urls'))
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
