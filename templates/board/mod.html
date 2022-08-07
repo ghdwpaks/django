@@ -1,0 +1,37 @@
+{% extends 'header.html' %}
+{% block con %}
+    <h2 class="text-primary"><b>게시글 수정</b></h2>
+    <br>
+    <form method="post"  enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td class="btd"><b>제목</b></td>
+                <td class="btd"><input type="text" name="rn" value="{{ r.name }}" placeholder="INPUT SUBJECT"></td>
+            </tr>
+            <tr>
+                <td class="btd"><b>표지</b></td>
+                <td class="btd"><input type="file" name="rt"> </td>
+            </tr>
+            <tr>
+                <td class="btd"><b>내용</b></td>
+                <td class="btd"><textarea cols="60" name="rc" rows="6" placeholder="INPUT CONTENT">{{ r.comment }}</textarea></td>
+            </tr>
+            <tr>
+                <td class="btd"></td>
+                <td class="btd"><button >생성</button></td>
+            </tr>
+        </table>
+        
+        
+    </form>
+    <style>
+        h2 {
+            padding-left: 30px;
+        }
+        .btd {
+            text-align: left;
+            padding: 30px;
+        }
+    </style>
+{% endblock %}

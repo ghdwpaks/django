@@ -7,6 +7,7 @@ urlpatterns = [
     path('index/',views.index,name="index"),
     path('create/',views.create,name="create"),
     path('detail/<tr>',views.detail,name="detail"),
+    path('mod/<tr>',views.mod,name="mod"),
     path('',views.gotoindex,name="top")
 ]
 

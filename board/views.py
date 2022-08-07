@@ -1,8 +1,9 @@
+from audioop import reverse
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
 from django.core.paginator import Paginator
 from .models import Board
 from django.utils import timezone
+from django.http import HttpResponseRedirect
 from dwm.models import User
 # Create your views here.
 
@@ -109,6 +110,51 @@ def create(req):
         else :
             return render(req, "board/create.html")
 
+
+def mod(req, tr):
+    if req.method == "POST":
+        if req.user.username == None or req.user.username == "" :
+            return redirect("board:index")
+        else :
+            r = Board.objects.get(id=tr)
+            print("board views mod r.writername :",r.writername)
+            print("board views mod req.user.username :",req.user.username)
+            if r.writername == req.user.username :
+
+                rn = req.POST.get("rn")
+                rt = req.FILES.get("rt")
+                rc = req.POST.get("rc")
+                print("board views mod if if rn :",rn)
+                print("board views mod if if rt :",rt)
+                print("board views mod if if rc :",rc)
+                if not rt == None :
+                    r.thumbnail = rt
+                    print("board views mod if if if changethumnail? : yes")
+                r.name = rn
+                r.comment = rc
+                r.save()
+                b = Board.objects.get(id=tr)
+                context = {
+                    "b" : b
+                }
+                return render(req, "board/detail.html",context)
+    
+    elif req.method == "GET":
+        print("board views create get")
+        print("board views create get req.user.username :",req.user.username)
+        
+        if req.user.username == None or req.user.username == "" :
+            return redirect("board:index")
+        else :
+            r = Board.objects.get(id=tr)
+            print("board views mod r.writername :",r.writername)
+            print("board views mod req.user.username :",req.user.username)
+            if r.writername == req.user.username :
+                print("board views mod over if")
+                context = {
+                    "r" : r
+                }
+                return render(req, "board/mod.html",context)
 
 def detail(req, tr) :
     print("board views detail tr :",tr)
