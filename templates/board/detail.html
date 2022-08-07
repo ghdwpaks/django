@@ -28,15 +28,15 @@
     </table>
     {% if user.username == b.writername %}
         <input class="btn btn-primary" type="button" value="MOD" onclick="gomod()">
-        <input class="btn btn-dark" type="button" value="BACK" onclick="history_back()">
     {% endif %}
+    <input class="btn btn-dark" type="button" value="BACK" onclick="history_back()">
 </div>
 <script>
     function gomod() {
         location.href='/board/mod/{{b.id}}'
     }
     function history_back() {
-        location.href='/board/index'
+        history.back()
     }
 </script>
 <style>

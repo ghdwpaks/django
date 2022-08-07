@@ -1,0 +1,96 @@
+
+cd /
+python -m venv mysite
+C:\mysite\mysite\Scripts\activate
+
+c:\mysite\Scripts\activate
+pip install django   (장고 설치)
+pip list   (설치 확인용)
+django-admin startproject config . 
+deactivate
+python manage.py startapp 프로젝트 이름
+python manage.py startapp
+python manage.py runserver
+
+
+cd /mysite
+c:\mysite\mysite\Scripts\activate
+pip install django  
+django-admin startproject config . 
+deactivate
+python manage.py startapp
+python manage.py runserver  
+
+
+python manage.py makemigrations
+python manage.py migrate
+Student.objects.all()
+
+
+
+
+python manage.py shell
+from testdb.models import Student
+Student(name="",age=,comment='').save()
+= Student.objects.all()
+= Student.objects.get(id=)
+.delete()
+
+
+
+
+
+
+
+
+
+C:\workspace\django\mysite\Scripts\activate
+
+
+
+
+cd /
+python -m venv mysite
+C:\workspace\django\mysite\Scripts\activate
+
+C:\workspace\django\mysite\Scripts\activate
+pip install django   (장고 설치)
+pip list   (설치 확인용)
+django-admin startproject config . 
+deactivate
+python manage.py startapp 프로젝트 이름
+python manage.py startapp
+python manage.py runserver
+
+
+cd /mysite
+C:\workspace\django\mysite\Scripts\activate
+pip install django  
+django-admin startproject config . 
+deactivate
+python manage.py startapp
+python manage.py runserver
+
+
+python manage.py makemigrations
+python manage.py migrate
+
+python manage.py createsuperuser
+
+
+python manage.py shell
+.models import 
+from testdb.models import Student
+from book.models import Book
+Book(site_name='',site_url='').save()
+Book(site_name="",site_url="").save()
+
+Student(name="",age=,comment='').save()
+.objects.all()
+= Student.objects.get(id=)
+.delete()
+
+
+
+mathfilters
+pip install django-mathfilters
