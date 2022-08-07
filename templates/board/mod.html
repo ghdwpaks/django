@@ -19,12 +19,18 @@
             </tr>
             <tr>
                 <td class="btd"></td>
-                <td class="btd"><button >생성</button></td>
+                <td class="btd"><input class="btn btn-primary btn-lg" type="submit" value="MODIFY"></td>
+                <td class="btd"><input class="btn btn-danger btn-lg" type="button" value="DELETE" onclick="godel()"></td>
             </tr>
         </table>
         
         
     </form>
+    <script>
+        function godel() {
+            location.href='/board/delete/{{r.id}}'
+        }
+    </script>
     <style>
         h2 {
             padding-left: 30px;

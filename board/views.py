@@ -156,6 +156,23 @@ def mod(req, tr):
                 }
                 return render(req, "board/mod.html",context)
 
+
+def delete(req, tr):
+    if req.method == "GET":
+        print("board views create get")
+        print("board views create get req.user.username :",req.user.username)
+        
+        if req.user.username == None or req.user.username == "" :
+            return redirect("board:index")
+        else :
+            r = Board.objects.get(id=tr)
+            print("board views mod r.writername :",r.writername)
+            print("board views mod req.user.username :",req.user.username)
+            if r.writername == req.user.username :
+                r.delete()
+                return redirect("board:index")
+
+
 def detail(req, tr) :
     print("board views detail tr :",tr)
     #tr : target raw
