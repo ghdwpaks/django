@@ -15,7 +15,7 @@ class Shop(models.Model) :
         if self.pic:
             print("self.pic.url :",self.pic.url)
             return self.pic.url
-        return "/media/no.jpg"
+        return "/media/nno.jpg"
         
     def __str__(self):
         return str(self.id)+" "+str(self.name)

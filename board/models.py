@@ -25,9 +25,9 @@ class Board(models.Model) :
             print("str(self.thumbnail.url).split('.')[-1] :",str(self.thumbnail.url).split(".")[-1])
             print("str(self.thumbnail.url).split('.')[-1] in ['png','jpg','jpeg'] :",str(self.thumbnail.url).split('.')[-1] in ['png','jpg','jpeg'])
             if not str(self.thumbnail.url).split('.')[-1] in ['png','jpg','jpeg'] :
-               return "/media/nopho.png"
+               return "/media/nnopho.png"
             return self.thumbnail.url
-        return "/media/no.jpg"
+        return "/media/nno.jpg"
 
 
     def getfilename(self):
