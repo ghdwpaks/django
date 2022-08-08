@@ -1,10 +1,18 @@
 from audioop import reverse
+from re import T
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from .models import Board
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 from dwm.models import User
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
+from config import settings
+import os
+from django.http import HttpResponse 
+from django.http import Http404 
 # Create your views here.
 
 def gotoindex(req) :
@@ -192,3 +200,16 @@ def detail(req, tr) :
         "b" : b
     }
     return render(req, "board/detail.html",context)
+
+def down(req):
+    print("board views down entered")
+    tr = req.GET.get("tr","/media/no.jpg")
+    print("board views down path :",tr)
+    file_path = os.path.join(str(settings.MEDIA_ROOT)+"/boardpic", tr)
+    print("board views down file_path :",file_path)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404

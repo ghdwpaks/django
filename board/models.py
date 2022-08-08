@@ -1,5 +1,10 @@
+
+from re import L
 from django.db import models
 from datetime import datetime
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
 # Create your models here.
 
 class Board(models.Model) :
@@ -23,6 +28,22 @@ class Board(models.Model) :
                return "/media/nopho.png"
             return self.thumbnail.url
         return "/media/no.jpg"
+
+
+    def getfilename(self):
+        print("board models Board getfilename")
+        print("board models Board getfilename self.thumbnail :",self.thumbnail)
+        if self.thumbnail:
+            res = self.thumbnail.url
+            if type(res) == type("") :
+               res = res.split("/")[-1] 
+               print("board models Board getfilename if if res :",res)
+            return res
+        return None
         
+        
+    
+
     def __str__(self):
+
         return str(self.id)+" "+str(self.name)
