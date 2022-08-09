@@ -7,29 +7,29 @@
     <table class="table table-bordered" border="0" style="width: 60%;">
         <tr>
             <th  class="btd" style="width: 25%">작성자 : </th>
-            <td  class="btd" style="width: 25%">{{ b.writernick }}</td>
+            <td  class="btd" style="width: 25%">{{ boardobj.writernick }}</td>
             <th  class="btd" style="width: 25%">작성일자 : </th>
-            <td  class="btd" style="width: 25%">{{ b.credate }}</td>
+            <td  class="btd" style="width: 25%">{{ boardobj.credate }}</td>
         </tr>   
         <tr>
-            <td class="btd" colspan="2" >{{ b.name }}</td> 
-            <td class="btd" colspan="2" rowspan="4"><img style="height: 300px;" src="{{ b.getthum }}" height="150px"></td> 
+            <td class="btd" colspan="2" >{{ boardobj.name }}</td> 
+            <td class="btd" colspan="2" rowspan="4"><img style="height: 300px;" src="{{ boardobj.getthum }}" height="150px"></td> 
         </tr>
         <tr>
-            <td class="btd" colspan="2" rowspan="3">{{ b.comment }}</td>
+            <td class="btd" colspan="2" rowspan="3">{{ boardobj.comment }}</td>
         </tr>
         <tr></tr>
         <tr></tr>
         <tr>
             <th class="btd">조회수 : </th>
-            <td class="btd">{{ b.hits }}</td>
+            <td class="btd">{{ boardobj.hits }}</td>
             <td colspan="2">
                 <!--<input class="btn btn-outline-success btn-lg btn-block" type="button" value="DOWNLOAD" onclick="down()">-->
-                <a href="{% url 'board:down' %}?tr={{ b.getfilename }}"><h5>DOWNLOAD CONTENT</h5></a>
+                <a href="{% url 'board:down' %}?downtarget={{ boardobj.getfilename }}"><h5>DOWNLOAD CONTENT</h5></a>
             </td>
         </tr>
     </table>
-    {% if user.username == b.writername %}
+    {% if user.username == boardobj.writername %}
         <input class="btn btnb btn-outline-primary" type="button" value="MOD" onclick="gomod()">
     {% endif %}
     <input class="btn btnb btn-outline-dark" type="button" value="BACK" onclick="history_back()">
@@ -39,7 +39,7 @@
         location.href='/board/down/'
     }
     function gomod() {
-        location.href='/board/mod/{{b.id}}'
+        location.href='/board/mod/{{boardobj.id}}'
     }
     function history_back() {
         history.back()

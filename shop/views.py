@@ -6,9 +6,9 @@ from .models import Shop
 def gotoindex(req) :
     return redirect("shop:index")
 def index(req) :
-    s = Shop.objects.all()
+    ShopObj = Shop.objects.all()
     context = {
-        "s" : s
+        "s" : ShopObj
     }
 
     return render(req,"shop/index.html",context)

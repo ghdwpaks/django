@@ -18,7 +18,7 @@
         <th class="text-center align-middle btd" style="width: 10%;">HITS</th>
         <th class="text-center align-middle btd" style="width: 30%;" colspan="2">WRITER</th>
     </tr>   
-    {% for i in b %}
+    {% for i in boardobj %}
     
         <tr>
                 <td class="text-center align-middle btd">{{ i.id }}</td> 
@@ -28,7 +28,7 @@
                 <td class="text-center align-middle btd">{{ i.hits }}</td>
                 <td class="text-center align-middle btd">{{ i.writernick }}</td>
                 
-                {% for j in phs %}
+                {% for j in writerphotos %}
                     {% for key, value in j.items %}
                         {% if key == i.writername %}
                         <td class="align-middle btd"><img src="{{ value }}" width="100px"></td>
@@ -47,24 +47,24 @@
         </tr>
     {% endfor %}
 </table>
-{% if b.has_previous %}
+{% if boardobj.has_previous %}
     <a href="{% url 'board:index' %}?page=1&kw={{kw}}&cate={{cate}}"><button class="btn btn-light" >처음</button></a>
-    <a href="{% url 'board:index' %}?page={{ b.previous_page_number }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light" >이전</button></a>
+    <a href="{% url 'board:index' %}?page={{ boardobj.previous_page_number }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light" >이전</button></a>
 {% else %}
     <button class="btn btn-light"  disabled>처음</button>
     <button class="btn btn-light" disabled>이전</button>
 {% endif %}
-{% for i in b.paginator.page_range %}
-    {% if i >= b.number|sub:5 and b.number|add:4 >= i %}
+{% for i in boardobj.paginator.page_range %}
+    {% if i >= boardobj.number|sub:5 and boardobj.number|add:4 >= i %}
         <a href="{% url 'board:index' %}?page={{i}}&kw={{kw}}&cate={{cate}}">
-            <button {% if i == b.number %} disabled {% endif %} class="btn btn-light">{{ i }}</button>
+            <button {% if i == boardobj.number %} disabled {% endif %} class="btn btn-light">{{ i }}</button>
         </a>
     {% endif %}
 {% endfor %}
 
-{% if b.has_next %}
-    <a href="{% url 'board:index' %}?page={{ b.next_page_number }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light">다음</button></a>
-    <a href="{% url 'board:index' %}?page={{ b.paginator.num_pages }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light">마지막</button></a>
+{% if boardobj.has_next %}
+    <a href="{% url 'board:index' %}?page={{ boardobj.next_page_number }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light">다음</button></a>
+    <a href="{% url 'board:index' %}?page={{ boardobj.paginator.num_pages }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light">마지막</button></a>
 {% else %}
     <button class="btn btn-light" disabled>다음</button>
     <button class="btn btn-light" disabled>마지막</button>

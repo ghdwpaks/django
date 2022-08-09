@@ -15,25 +15,25 @@ def index(req) :
 
 def join(request):
     if request.method == "POST":
-        un = request.POST.get("uname")
-        up = request.POST.get("upass")
-        uc = request.POST.get("ucomm")
-        ue = request.POST.get("umail")
-        uni = request.POST.get("unick")
-        pi = request.FILES.get("upic")
-        User.objects.create_user(username=un, password=up, nickname=uni,comment=uc, email=ue, photo=pi)
+        username = request.POST.get("uname")
+        userpassword = request.POST.get("upass")
+        usercomment = request.POST.get("ucomm")
+        useremail = request.POST.get("umail")
+        usernickname = request.POST.get("unick")
+        userpicture = request.FILES.get("upic")
+        User.objects.create_user(username=username, password=userpassword, nickname=usernickname,comment=usercomment, email=useremail, photo=userpicture)
         return redirect("dwm:index")
     return render(request, "dwm/join.html")
 
 def userlogin(req):
     if req.method == "POST":
-        un = req.POST.get("uname")
-        up = req.POST.get("upass")
+        username = req.POST.get("uname")
+        userpassword = req.POST.get("upass")
         
-        u = User.objects.get(username=un)
-        u = authenticate(username=un, password=up,nickname=u.nickname,userid=u.id)
-        if u:
-            login(req, u)
+        UserObj = User.objects.get(username=username)
+        UserObj = authenticate(username=username, password=userpassword,nickname=UserObj.nickname,userid=UserObj.id)
+        if UserObj:
+            login(req, UserObj)
             return redirect("dwm:index")
         else:
             pass 
@@ -51,31 +51,31 @@ def mod(req) :
         print("dwm views mod req.session :",req.session)
         tid = req.user.id
         print("dwm views mod tid :",tid)
-        u = User.objects.get(id=tid)
+        UserObj = User.objects.get(id=tid)
         
-        uni = req.POST.get("nickname")                                  
-        print("dwm views mod uni :",uni)
-        print("dwm views mod type(uni) :",uni)
+        usernickname = req.POST.get("nickname")                                  
+        print("dwm views mod usernickname :",usernickname)
+        print("dwm views mod type(usernickname) :",usernickname)
 
-        uc = req.POST.get("ucomm")
-        print("dwm views mod uc :",uc)
-        print("dwm views mod type(uc) :",uc)
+        usercomment = req.POST.get("ucomm")
+        print("dwm views mod usercomment :",usercomment)
+        print("dwm views mod type(usercomment) :",usercomment)
 
-        ue = req.POST.get("umail")
-        print("dwm views mod ue :",ue)
-        print("dwm views mod type(ue) :",ue)
+        useremail = req.POST.get("umail")
+        print("dwm views mod useremail :",useremail)
+        print("dwm views mod type(useremail) :",useremail)
 
-        pi = req.FILES.get("upic")
-        print("dwm views mod pi :",pi)
-        print("dwm views mod type(pi) :",pi)
+        userpicture = req.FILES.get("upic")
+        print("dwm views mod userpicture :",userpicture)
+        print("dwm views mod type(userpicture) :",userpicture)
 
-        u.nickname = uni
-        u.comment = uc
-        u.email = ue
+        UserObj.nickname = usernickname
+        UserObj.comment = usercomment
+        UserObj.email = useremail
 
-        if not pi == None :
-            u.photo = pi
-        u.save()
+        if not userpicture == None :
+            UserObj.photo = userpicture
+        UserObj.save()
         
 
         return redirect("dwm:index")

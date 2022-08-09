@@ -7,15 +7,15 @@
         <table>
             <tr>
                 <td class="btd"><b>제목</b></td>
-                <td class="btd"><input type="text" name="rn" value="{{ r.name }}" placeholder="INPUT SUBJECT"></td>
+                <td class="btd"><input type="text" name="name" value="{{ boardobj.name }}" placeholder="INPUT SUBJECT"></td>
             </tr>
             <tr>
                 <td class="btd"><b>표지</b></td>
-                <td class="btd"><input type="file" name="rt"> </td>
+                <td class="btd"><input type="file" name="thumbnail"> </td>
             </tr>
             <tr>
                 <td class="btd"><b>내용</b></td>
-                <td class="btd"><textarea cols="60" name="rc" rows="6" placeholder="INPUT CONTENT">{{ r.comment }}</textarea></td>
+                <td class="btd"><textarea cols="60" name="comment" rows="6" placeholder="INPUT CONTENT">{{ boardobj.comment }}</textarea></td>
             </tr>
             <tr>
                 <td class="btd"></td>
@@ -28,7 +28,7 @@
     </form>
     <script>
         function godel() {
-            location.href='/board/delete/{{r.id}}'
+            location.href='/board/delete/{{boardobj.id}}'
         }
     </script>
     <style>
