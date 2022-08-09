@@ -1,0 +1,8 @@
+../dwm/commands.txt
+
+pip install django
+pip install djangorestframework
+
+django-admin startproject movie_api
+cd movie_api
+python manage.py startapp movies
