@@ -119,7 +119,7 @@ def mod(req, tr):
             BoardObj = Board.objects.get(id=tr)
             # print("board views mod BoardObj.writername :",BoardObj.writername)
             # print("board views mod req.user.username :",req.user.username)
-            if BoardObj.writername == req.user.username :
+            if BoardObj.writerops.username == req.user.username :
 
                 name = req.POST.get("name")
                 thumbnail = req.FILES.get("thumbnail")
@@ -147,9 +147,9 @@ def mod(req, tr):
             return redirect("board:index")
         else :
             BoardObj = Board.objects.get(id=tr)
-            print("board views mod BoardObj.writername :",BoardObj.writername)
+            print("board views mod BoardObj.writerops.username :",BoardObj.writerops.username)
             print("board views mod req.user.username :",req.user.username)
-            if BoardObj.writername == req.user.username :
+            if BoardObj.writerops.username == req.user.username :
                 print("board views mod over if")
                 context = {
                     "boardobj" : BoardObj
@@ -166,9 +166,9 @@ def delete(req, tr):
             return redirect("board:index")
         else :
             r = Board.objects.get(id=tr)
-            print("board views mod r.writername :",r.writername)
+            print("board views mod r.writerops.username :",r.writerops.username)
             print("board views mod req.user.username :",req.user.username)
-            if r.writername == req.user.username :
+            if r.writerops.username == req.user.username :
                 r.delete()
                 return redirect("board:index")
 
