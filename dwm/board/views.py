@@ -72,39 +72,12 @@ def index(req):
         BoardObj = BoardObj.order_by('id')
     elif Order == "di" :
         BoardObj = BoardObj.order_by('-id')
-    writers = BoardObj.values('writername')
-    writers = writers.distinct()
-    #print("board views index writers :",writers)
-    #print("board views index type(writers) :",type(writers))
-    writersname = []
-    for i in writers : 
-        #print("i : ",i)
-        #print("type(i) : ",type(i))
-        writersname.append(i['writername'])
-    writersname = set(writersname)
-    writersname = list(writersname)
-    #print("board views index writersname :",writersname)
-    #print("board views index writersname.values() :",writersname.values())
-    writerphotos = []
-    for i in range(len(writersname)) :
-        #print("board views index for i writersname[i] :",writersname[i])
-        tempphs = User.objects.get(username=writersname[i])
-        #print("board views index for i tempphs 1 :",tempphs)
-        #print("board views index for i type(tempphs) 1 :",type(tempphs))
-        tempphs = User.getphoto(tempphs)
-        #print("board views index for i tempphs 2 :",tempphs)
-        #print("board views index for i type(tempphs) 2 :",type(tempphs))
-        #print("board views index for i {writersname[i]:tempphs} :",{writersname[i]:tempphs})
-        
-        writerphotos.append({writersname[i]:tempphs})
-    print("board views index writerphotos :",writerphotos)
-    #print("board views index type(writerphotos) :",type(writerphotos))
-
+    
+    
     PageData = Paginator(BoardObj, 5)
     BoardObj = PageData.get_page(Page)
     context = {
-        "boardobj" : BoardObj,
-        "writerphotos" : writerphotos
+        "boardobj" : BoardObj
     }
     return render(req, "board/index.html", context)
 
@@ -124,7 +97,9 @@ def create(req):
             print("thumbnail :",thumbnail)
             print("name :",name)
             print("comment :",comment)
-            Board(name=name, comment=comment, writername=username,thumbnail=thumbnail,writernick=usernickname,credate=timezone.now()).save()
+            creatinguser = User.objects.get(username=username)
+
+            Board(name=name, writerops=creatinguser,comment=comment,thumbnail=thumbnail,credate=timezone.now()).save()
             return redirect("board:index")
     
     elif req.method == "GET":

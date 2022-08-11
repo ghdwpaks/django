@@ -5,12 +5,14 @@ from datetime import datetime
 from PIL import Image
 from io import BytesIO
 from django.core.files.base import ContentFile
+from dwm.models import User
 # Create your models here.
 
 class Board(models.Model) :
+    
+    
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    writername = models.CharField(max_length=100)
-    writernick = models.CharField(max_length=100,default=None)
+    writerops =  models.ForeignKey(User, related_name="user", on_delete=models.CASCADE, db_column="writerops")
     credate = models.DateTimeField(default=datetime.now())
     name = models.CharField(max_length=100,default="게시글",blank=True)
     thumbnail = models.ImageField(upload_to=("boardpic/"),blank=True)
@@ -47,3 +49,8 @@ class Board(models.Model) :
     def __str__(self):
 
         return str(self.id)+" "+str(self.name)
+
+class Reply(models.Model) :
+    id = models.BigAutoField(help_text="Reply ID", primary_key=True)
+    reply_id = models.ForeignKey("Board", related_name="board", on_delete=models.CASCADE, db_column="reply_id")
+    reply_comment = models.TextField(help_text="Reply Comment", blank=False, null=False)

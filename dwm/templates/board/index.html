@@ -26,15 +26,7 @@
                 <td class="text-center align-middle btd">{{ i.name|truncatewords:8 }}</td>
                 <td class="text-center align-middle btd">{{ i.comment|truncatewords:5 }}</td>
                 <td class="text-center align-middle btd">{{ i.hits }}</td>
-                <td class="text-center align-middle btd">{{ i.writernick }}</td>
-                
-                {% for j in writerphotos %}
-                    {% for key, value in j.items %}
-                        {% if key == i.writername %}
-                        <td class="align-middle btd"><img src="{{ value }}" width="100px"></td>
-                        {% endif %}
-                    {% endfor %}
-                {% endfor %}
+                <td class="align-middle btd"><img src="/media/{{ i.writerops.photo }}" width="100px"></td>
         </tr>
     
     {% empty %}
