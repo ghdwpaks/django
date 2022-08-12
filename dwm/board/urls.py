@@ -11,6 +11,7 @@ urlpatterns = [
     path('mod/<tr>',views.mod,name="mod"),
     path('delete/<tr>',views.delete,name="delete"),
     path('reply/<tr>',views.reply,name="reply"),
+    path('reply/del/<replytr>/<boardtr>',views.replydel,name="replydel"),
     path('',views.gotoindex,name="top")
 ]
 

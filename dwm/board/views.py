@@ -163,6 +163,8 @@ def reply(req, tr):
             return redirect("board:index")
         else :
             reply_comment = req.POST.get("reply_comment")
+            if reply_comment == None :
+                reply_comment = ""
             print("board views reply post")
             username = req.user.username
             replyinguser = User.objects.get(username=username)
@@ -170,6 +172,21 @@ def reply(req, tr):
             return redirect("/board/detail/"+tr)
     elif req.method == "GET":
         return redirect("board:index")
+
+def replydel(req, replytr,boardtr):
+    if req.method == "GET":
+        print("board views replydel get")
+        print("board views replydel get req.user.username :",req.user.username)
+        
+        if req.user.username == None or req.user.username == "" :
+            return redirect("board:index")
+        else :
+            r = Reply.objects.get(id=replytr)
+            print("board views mod r.reply_writerops.username :",r.reply_writerops.username)
+            print("board views mod req.user.username :",req.user.username)
+            if r.reply_writerops.username == req.user.username :
+                r.delete()
+            return redirect("/board/detail/"+boardtr)
 
 def delete(req, tr):
     if req.method == "GET":
