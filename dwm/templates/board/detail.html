@@ -28,12 +28,44 @@
                 <a href="{% url 'board:down' %}?downtarget={{ boardobj.getfilename }}"><h5>DOWNLOAD CONTENT</h5></a>
             </td>
         </tr>
+        <tr>
+            <td>
+                <input class="btn btn-outline-dark" type="button " value="BACK" onclick="history_back()">
+            </td>
+            {% if user.username == boardobj.writerops.username %}
+                <td>
+                    <input class="btn  btn-outline-primary" type="button" value="MOD" onclick="gomod()">
+                </td>
+            {% endif %}
+        </tr>
     </table>
-    {% if user.username == boardobj.writerops.username %}
-        <input class="btn btnb btn-outline-primary" type="button" value="MOD" onclick="gomod()">
-    {% endif %}
-    <input class="btn btnb btn-outline-dark" type="button" value="BACK" onclick="history_back()">
 </div>
+<br><br>
+
+<table class="table table-bordered" style="width: 60%;">
+    {% if user.is_authenticated %}
+    <tr>
+        <form action="/board/reply/{{boardobj.id}}" method="post">
+            {% csrf_token %}
+            <td style="width: 20%;"><button class="btn btn-outline-success">COMMENT</button></td>
+            <td style="width: 80%;">
+                    <textarea name="reply_comment" cols="60" rows="1"></textarea>
+            </td>
+        </form>
+    </tr>
+    {% endif %}
+    {% for i in replyobj %}
+    <tr>
+        <td>{{ i.reply_writerops.nickname }}</td>
+        <td>{{ i.credate }}</td>
+    </tr>
+    
+    <tr>
+        <td colspan="2">{{ i.reply_comment }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<div style="height: 60%;"></div>
 <script>
     function down() {
         location.href='/board/down/'

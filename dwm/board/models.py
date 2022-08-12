@@ -12,7 +12,7 @@ class Board(models.Model) :
     
     
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    writerops =  models.ForeignKey(User, related_name="user", on_delete=models.CASCADE, db_column="writerops")
+    writerops =  models.ForeignKey(User, related_name="board", on_delete=models.CASCADE, db_column="writerops")
     credate = models.DateTimeField(default=datetime.now())
     name = models.CharField(max_length=100,default="게시글",blank=True)
     thumbnail = models.ImageField(upload_to=("boardpic/"),blank=True)
@@ -47,10 +47,13 @@ class Board(models.Model) :
     
 
     def __str__(self):
-
         return str(self.id)+" "+str(self.name)
 
 class Reply(models.Model) :
-    id = models.BigAutoField(help_text="Reply ID", primary_key=True)
-    reply_id = models.ForeignKey("Board", related_name="board", on_delete=models.CASCADE, db_column="reply_id")
+    id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
+    comment_id = models.IntegerField(default=0)
+    reply_writerops = models.ForeignKey(User, related_name="reply", on_delete=models.CASCADE, db_column="reply_writerops")
     reply_comment = models.TextField(help_text="Reply Comment", blank=False, null=False)
+    credate = models.DateTimeField(default=datetime.now())
+    def __str__(self):
+        return str(self.id)+":"+str(self.comment_id)+":"+str(self.reply_writerops.username)+":"+str(self.reply_comment)

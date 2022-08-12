@@ -3,6 +3,7 @@ from re import T
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from .models import Board
+from .models import Reply
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 from dwm.models import User
@@ -156,11 +157,24 @@ def mod(req, tr):
                 }
                 return render(req, "board/mod.html",context)
 
+def reply(req, tr):
+    if req.method == "POST":
+        if req.user.username == None or req.user.username == "" :
+            return redirect("board:index")
+        else :
+            reply_comment = req.POST.get("reply_comment")
+            print("board views reply post")
+            username = req.user.username
+            replyinguser = User.objects.get(username=username)
+            Reply(comment_id=tr,reply_writerops=replyinguser,reply_comment=reply_comment,credate=timezone.now()).save()
+            return redirect("/board/detail/"+tr)
+    elif req.method == "GET":
+        return redirect("board:index")
 
 def delete(req, tr):
     if req.method == "GET":
-        print("board views create get")
-        print("board views create get req.user.username :",req.user.username)
+        print("board views delete get")
+        print("board views delete get req.user.username :",req.user.username)
         
         if req.user.username == None or req.user.username == "" :
             return redirect("board:index")
@@ -187,10 +201,14 @@ def detail(req, tr) :
     #print("board views detail BoardObj.comment :",BoardObj.comment)
     BoardObj.hits = BoardObj.hits+1
     BoardObj.save()
-    
+    ReplyObj = Reply.objects.filter(comment_id=tr)
+    ReplyObj = ReplyObj.order_by('-id')
+    print("board views detail ReplyObj 2:",ReplyObj)
     context = {
-        "boardobj" : BoardObj
+        "boardobj" : BoardObj,
+        "replyobj" : ReplyObj
     }
+    print("board views detail tried t")
     return render(req, "board/detail.html",context)
 
 def down(req):
@@ -205,3 +223,6 @@ def down(req):
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404
+
+
+    
