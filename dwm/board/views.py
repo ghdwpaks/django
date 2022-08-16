@@ -1,26 +1,95 @@
-
-from re import T
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from .models import Board
 from .models import Reply
 from django.utils import timezone
-from django.http import HttpResponseRedirect
 from dwm.models import User
 from PIL import Image
-from io import BytesIO
-from django.core.files.base import ContentFile
 from config import settings
 import os
 from django.http import HttpResponse 
 from django.http import Http404 
-import sys
-
+from django.core.files import File
 # Create your views here.
 
 def gotoindex(req) :
     return redirect("board:index")
+
+
+def create(req):
+    if req.method == "POST":
+        if req.user.username == None or req.user.username == "" :
+            return redirect("board:index")
+        else :
+            
+            username = req.user.username
+            usernickname = req.user.nickname
+            thumbnail = req.FILES.get("thumbnail")
+            name = req.POST.get("name")
+            comment = req.POST.get("comment")
+            print("board views create if else username :",username)
+            print("board views create if else usernickname :",usernickname)
+            print("board views create if else thumbnail :",thumbnail) #thumbnail : 20200927_161805.png
+            print("board views create if else type(thumbnail) :",type(thumbnail)) #thumbnail : 20200927_161805.png
+            print("board views create if else name :",name)
+            print("board views create if else comment :",comment)
+            creatinguser = User.objects.get(username=username)
+            b = Board()
+            b.name = name
+            b.writerops = creatinguser
+            b.comment = comment
+            b.thumbnail = thumbnail
+            print("board views create if else b.thumbnail :",b.thumbnail) #thumbnail : 20200927_161805.png
+            print("board views create if else type(b.thumbnail) :",type(b.thumbnail)) #thumbnail : 20200927_161805.png
+            b.credate = timezone.now()
+            b.save()
+            print("board views create if else b :",b)
+            print("board views create if else type(b) :",type(b))
+            print("board views create if else b.id :",b.id)
+
+
+            change_path=str(settings.MEDIA_ROOT)+'\low\\boardpic\\'
+            print("baord views create b :",b)
+            print("baord views create type(b) :",type(b))
+            print("baord views create b.getthum() :",b.getthum())
+            print("baord views create type(b.getthum()) :",type(b.getthum()))
+            filename = str(b.getthum()).split("/")[-1]
+            print("baord views create filename :",filename)
+            original_path = str(settings.MEDIA_ROOT)+'\\boardpic\\'
+            file = original_path + filename
+
+
+            print("baord views create file :",file)
+            print("baord views create type(file) :",type(file))
+
+            img = Image.open(file,'r')
+            print("baord view try im 1")
+            img_resize = img.resize((int(img.width / 5), int(img.height / 5)))
+            img_resize.save(change_path+filename, qualty=30)
+            print("baord view try im 2")
+            print("baord view try img_resize :",img_resize)
+            print("baord view try type(img_resize) :",type(img_resize))
+
+            print("baord view try img :",img)
+            print("baord view try type(img) :",type(img))
+            b.thumbnail = str(change_path+filename)
+
+            b.save()
+            print("baord view try im 3")
+            print("baord view try im 4")
+
+
+
+            return redirect("board:index")
     
+    elif req.method == "GET":
+        print("board views create get")
+        print("board views create get req.user.username :",req.user.username)
+        if req.user.username == None or req.user.username == "" :
+            return redirect("board:index")
+        else :
+            return render(req, "board/create.html")
+
 def index(req):
     global User
     Page = req.GET.get("page",1)
@@ -84,43 +153,6 @@ def index(req):
     }
     return render(req, "board/index.html", context)
 
-def create(req):
-    if req.method == "POST":
-        if req.user.username == None or req.user.username == "" :
-            return redirect("board:index")
-        else :
-            
-            username = req.user.username
-            usernickname = req.user.nickname
-            thumbnail = req.FILES.get("thumbnail")
-            name = req.POST.get("name")
-            comment = req.POST.get("comment")
-            print("board views create if ifelse username :",username)
-            print("board views create if ifelse usernickname :",usernickname)
-            print("board views create if ifelse thumbnail :",thumbnail) #thumbnail : 81841787_p0.jpg
-            print("board views create if ifelse name :",name)
-            print("board views create if ifelse comment :",comment)
-            creatinguser = User.objects.get(username=username)
-            b = Board()
-            b.name = name
-            b.writerops = creatinguser
-            b.comment =comment
-            b.thumbnail = thumbnail
-            b.credate = timezone.now()
-            b.save()
-            print("board views create if ifelse b :",b)
-            print("board views create if ifelse type(b) :",type(b))
-            print("board views create if ifelse b.id :",b.id)
-            change_img_qualty(b.id)
-            return redirect("board:index")
-    
-    elif req.method == "GET":
-        print("board views create get")
-        print("board views create get req.user.username :",req.user.username)
-        if req.user.username == None or req.user.username == "" :
-            return redirect("board:index")
-        else :
-            return render(req, "board/create.html")
 
 
 def mod(req, tr):
