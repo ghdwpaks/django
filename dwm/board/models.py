@@ -42,6 +42,9 @@ class Board(models.Model) :
                print("board models Board getfilename if if res :",res)
             return res
         return None
+
+    def getid(self) :
+        return self.id
         
         
     

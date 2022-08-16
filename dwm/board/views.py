@@ -1,4 +1,4 @@
-from audioop import reverse
+
 from re import T
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
@@ -14,6 +14,8 @@ from config import settings
 import os
 from django.http import HttpResponse 
 from django.http import Http404 
+import sys
+
 # Create your views here.
 
 def gotoindex(req) :
@@ -87,20 +89,29 @@ def create(req):
         if req.user.username == None or req.user.username == "" :
             return redirect("board:index")
         else :
+            
             username = req.user.username
             usernickname = req.user.nickname
             thumbnail = req.FILES.get("thumbnail")
             name = req.POST.get("name")
             comment = req.POST.get("comment")
-            print("board views create post")
-            print("username :",username)
-            print("usernickname :",usernickname)
-            print("thumbnail :",thumbnail)
-            print("name :",name)
-            print("comment :",comment)
+            print("board views create if ifelse username :",username)
+            print("board views create if ifelse usernickname :",usernickname)
+            print("board views create if ifelse thumbnail :",thumbnail) #thumbnail : 81841787_p0.jpg
+            print("board views create if ifelse name :",name)
+            print("board views create if ifelse comment :",comment)
             creatinguser = User.objects.get(username=username)
-
-            Board(name=name, writerops=creatinguser,comment=comment,thumbnail=thumbnail,credate=timezone.now()).save()
+            b = Board()
+            b.name = name
+            b.writerops = creatinguser
+            b.comment =comment
+            b.thumbnail = thumbnail
+            b.credate = timezone.now()
+            b.save()
+            print("board views create if ifelse b :",b)
+            print("board views create if ifelse type(b) :",type(b))
+            print("board views create if ifelse b.id :",b.id)
+            change_img_qualty(b.id)
             return redirect("board:index")
     
     elif req.method == "GET":
@@ -242,4 +253,37 @@ def down(req):
     raise Http404
 
 
-    
+def change_img_qualty(targetid, change_path=str(settings.MEDIA_ROOT)+'\low\\boardpic\\', qualty=30):
+    """
+    Change Image Qualty
+    :param original_path: 원본 경로
+    :param change_path: 변경 후 새롭게 저장될 경로
+    :param qualty: Qualty(품질) 퍼센트(기본 : 85%)
+    :return:
+    """
+    print("baord view change_img_qualty settings.MEDIA_ROOT :",settings.MEDIA_ROOT)
+    print("baord view change_img_qualty settings.MEDIA_URL :",settings.MEDIA_URL)
+    print("baord view change_img_qualty targetid :",targetid)
+    print("baord view change_img_qualty change_path :",change_path)
+    b = Board.objects.get(id=targetid)
+    print("baord view change_img_qualty b :",b)
+    print("baord view change_img_qualty type(b) :",type(b))
+    print("baord view change_img_qualty b.getthum() :",b.getthum())
+    print("baord view change_img_qualty type(b.getthum()) :",type(b.getthum()))
+    filename = str(b.getthum()).split("/")[-1]
+    print("baord view change_img_qualty filename :",filename)
+    original_path = str(settings.MEDIA_ROOT)+'\\boardpic\\'
+    file = original_path + filename
+
+    print("baord view change_img_qualty file :",file)
+    print("baord view change_img_qualty type(file) :",type(file))
+    continu = input("enter anything for keep going\n")
+    try:
+        img = Image.open(file)
+        print("baord view try im 1")
+        img_resize = img.resize((int(img.width / 5), int(img.height / 5)))
+        img_resize.save(change_path+filename, qualty=qualty)
+        print("baord view try im 2")
+    except Exception as e:
+        print("+ 실패 : {fail}".format(fail=file))
+
