@@ -278,19 +278,40 @@ def detail(req, tr) :
     print("board views detail tried t")
     return render(req, "board/detail.html",context)
 
-def down(req):
+def down(req): #media board pic
     print("board views down entered")
     downtarget = req.GET.get("downtarget","/media/no.jpg")
-    print("board views down path :",downtarget)
-    file_path = os.path.join(str(settings.MEDIA_ROOT)+"/boardpic", downtarget)
+    print("board views down downtarget :",downtarget)
+    print("board views down type(downtarget) :",type(downtarget))
+    print("board views down str(settings.MEDIA_ROOT) :",str(settings.MEDIA_ROOT))
+    
+    file_path = os.path.join(str(settings.MEDIA_ROOT)+"", downtarget)
     print("board views down file_path :",file_path)
-    if os.path.exists(file_path):
-        with open(file_path, 'rb') as file:
-            response = HttpResponse(file.read(), content_type="application/vnd.ms-excel")
-            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-            return response
-    raise Http404
-
+    try :
+        print("board views down try")
+        if os.path.exists(file_path):
+            with open(file_path, 'rb') as file:
+                response = HttpResponse(file.read(), content_type="application/vnd.ms-excel")
+                response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                return response
+        raise Http404
+    except :
+        print("board views down except")
+        print("board views down except str(downtarget) :",str(downtarget))
+        print("board views down except str(downtarget).split('/') :",str(downtarget).split('/'))
+        print("board views down except str(downtarget).split('/')[2:] :",str(downtarget).split('/')[2:])
+        print("board views down except '\\'.join(str(downtarget).split('/')[2:]) :",'\\'.join(str(downtarget).split('/')[2:]))
+        downtarget = '\\'.join(str(downtarget).split('/')[2:])
+        print("board views down except downtarget :",downtarget)
+        print("board views down except type(downtarget) :",type(downtarget))
+        file_path = str(settings.MEDIA_ROOT)+"\\"+str(downtarget)
+        print("board views down except file_path :",file_path)
+        if os.path.exists(file_path):
+            with open(file_path, 'rb') as file:
+                response = HttpResponse(file.read(), content_type="application/vnd.ms-excel")
+                response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+                return response
+        raise Http404
 
 def change_img_qualty(targetid, change_path=str(settings.MEDIA_ROOT)+'\low\\boardpic\\', qualty=30):
     """
@@ -325,5 +346,6 @@ def change_img_qualty(targetid, change_path=str(settings.MEDIA_ROOT)+'\low\\boar
         print("baord view try im 2")
     except Exception as e:
         print("+ 실패 : {fail}".format(fail=file))
+
 
 

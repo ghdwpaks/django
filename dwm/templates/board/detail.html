@@ -14,7 +14,12 @@
         <tr>
             <td class="btd" colspan="2" >{{ boardobj.name }}</td> 
             <td class="btd" colspan="2" rowspan="4">
+                
+                {% if  boardobj.getfilename == None or  boardobj.getfilename  == "" %}
+                <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm/{{ boardobj.getthum }}" height="150px">
+                {% else %}
                 <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm/media/{{ boardobj.getfilename }}" height="150px">
+                {% endif %}
             </td> 
         </tr>
         <tr>
@@ -27,7 +32,11 @@
             <td class="btd">{{ boardobj.hits }}</td>
             <td colspan="2">
                 <!--<input class="btn btn-outline-success btn-lg btn-block" type="button" value="DOWNLOAD" onclick="down()">-->
-                <a href="{% url 'board:down' %}?downtarget={{ boardobj.getfilename }}"><h5>DOWNLOAD CONTENT</h5></a>
+                {% if  boardobj.getfilename  == None or  boardobj.getfilename  == "" %}
+                    <a href="{% url 'board:down' %}?downtarget={{ boardobj.getthum }}"><h5>DOWNLOAD CONTENT</h5></a>
+                {% else %}
+                    <a href="{% url 'board:down' %}?downtarget={{ boardobj.getfilename }}"><h5>DOWNLOAD CONTENT</h5></a>
+                {% endif %}
             </td>
         </tr>
         <tr>

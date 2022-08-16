@@ -46,13 +46,13 @@ class Board(models.Model) :
     def getfilename(self):
         print("board models Board getfilename")
         print("board models Board getfilename self.boardfile :",self.boardfile)
-        if self.boardfile:
+        if (self.boardfile ) or not self.boardfile:
             res = self.boardfile
             if type(res) == type("") :
                res = res.split("/")[-1] 
                print("board models Board getfilename if if res :",res)
             return res
-        return None
+        return "/media/nno.jpg"
 
     def getid(self) :
         return self.id
