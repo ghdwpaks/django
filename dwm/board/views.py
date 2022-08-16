@@ -24,13 +24,13 @@ def create(req):
             
             username = req.user.username
             usernickname = req.user.nickname
-            thumbnail = req.FILES.get("thumbnail")
+            boardfile = req.FILES.get("file")
             name = req.POST.get("name")
             comment = req.POST.get("comment")
             print("board views create if else username :",username)
             print("board views create if else usernickname :",usernickname)
-            print("board views create if else thumbnail :",thumbnail) #thumbnail : 20200927_161805.png
-            print("board views create if else type(thumbnail) :",type(thumbnail)) #thumbnail : 20200927_161805.png
+            print("board views create if else boardfile :",boardfile) #thumbnail : 20200927_161805.png
+            print("board views create if else type(boardfile) :",type(boardfile)) #thumbnail : 20200927_161805.png
             print("board views create if else name :",name)
             print("board views create if else comment :",comment)
             creatinguser = User.objects.get(username=username)
@@ -38,9 +38,9 @@ def create(req):
             b.name = name
             b.writerops = creatinguser
             b.comment = comment
-            b.thumbnail = thumbnail
-            print("board views create if else b.thumbnail :",b.thumbnail) #thumbnail : 20200927_161805.png
-            print("board views create if else type(b.thumbnail) :",type(b.thumbnail)) #thumbnail : 20200927_161805.png
+            b.boardfile = boardfile
+            print("board views create if else b.boardfile :",b.boardfile) #thumbnail : 20200927_161805.png
+            print("board views create if else type(b.boardfile) :",type(b.boardfile)) #thumbnail : 20200927_161805.png
             b.credate = timezone.now()
             b.save()
             print("board views create if else b :",b)
@@ -48,31 +48,38 @@ def create(req):
             print("board views create if else b.id :",b.id)
 
 
-            change_path=str(settings.MEDIA_ROOT)+'\low\\boardpic\\'
-            print("baord views create b :",b)
-            print("baord views create type(b) :",type(b))
-            print("baord views create b.getthum() :",b.getthum())
-            print("baord views create type(b.getthum()) :",type(b.getthum()))
-            filename = str(b.getthum()).split("/")[-1]
-            print("baord views create filename :",filename)
-            original_path = str(settings.MEDIA_ROOT)+'\\boardpic\\'
-            file = original_path + filename
+            print("str(boardfile) :",str(boardfile))
+            print("str(boardfile).split('.') :",str(boardfile).split('.'))
+            print("str(boardfile).split('.')[-1] :",str(boardfile).split('.')[-1])
+            print("str(boardfile).split('.')[-1] in ['png','jpg','jpeg']  :",str(boardfile).split('.')[-1] in ['png','jpg','jpeg'] )
+
+            if str(boardfile).split('.')[-1] in ['png','jpg','jpeg'] :
+
+                change_path=str(settings.MEDIA_ROOT)+'\low\\boardpic\\'
+                print("baord views create b :",b)
+                print("baord views create type(b) :",type(b))
+                print("baord views create b.getfilename() :",b.getfilename())
+                print("baord views create type(b.getfilename()) :",type(b.getfilename()))
+                filename = str(b.getfilename()).split("/")[-1]
+                print("baord views create filename :",filename)
+                original_path = str(settings.MEDIA_ROOT)+'\\boardpic\\'
+                file = original_path + filename
 
 
-            print("baord views create file :",file)
-            print("baord views create type(file) :",type(file))
+                print("baord views create file :",file)
+                print("baord views create type(file) :",type(file))
 
-            img = Image.open(file,'r')
-            print("baord view try im 1")
-            img_resize = img.resize((int(img.width / 5), int(img.height / 5)))
-            img_resize.save(change_path+filename, qualty=30)
-            print("baord view try im 2")
-            print("baord view try img_resize :",img_resize)
-            print("baord view try type(img_resize) :",type(img_resize))
+                img = Image.open(file,'r')
+                print("baord view try im 1")
+                img_resize = img.resize((int(img.width / 5), int(img.height / 5)))
+                img_resize.save(change_path+filename, qualty=30)
+                print("baord view try im 2")
+                print("baord view try img_resize :",img_resize)
+                print("baord view try type(img_resize) :",type(img_resize))
 
-            print("baord view try img :",img)
-            print("baord view try type(img) :",type(img))
-            b.thumbnail = str(change_path+filename)
+                print("baord view try img :",img)
+                print("baord view try type(img) :",type(img))
+                b.thumbnail = str(change_path+filename)
 
             b.save()
             print("baord view try im 3")
@@ -318,4 +325,5 @@ def change_img_qualty(targetid, change_path=str(settings.MEDIA_ROOT)+'\low\\boar
         print("baord view try im 2")
     except Exception as e:
         print("+ 실패 : {fail}".format(fail=file))
+
 

@@ -13,7 +13,9 @@
         </tr>   
         <tr>
             <td class="btd" colspan="2" >{{ boardobj.name }}</td> 
-            <td class="btd" colspan="2" rowspan="4"><img style="height: 300px;" src="{{ boardobj.getthum }}" height="150px"></td> 
+            <td class="btd" colspan="2" rowspan="4">
+                <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm/media/{{ boardobj.getfilename }}" height="150px">
+            </td> 
         </tr>
         <tr>
             <td class="btd" colspan="2" rowspan="3">{{ boardobj.comment }}</td>
