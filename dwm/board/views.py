@@ -289,12 +289,7 @@ def down(req): #media board pic
     print("board views down file_path :",file_path)
     try :
         print("board views down try")
-        if os.path.exists(file_path):
-            with open(file_path, 'rb') as file:
-                response = HttpResponse(file.read(), content_type="application/vnd.ms-excel")
-                response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-                return response
-        raise Http404
+        return filedownload(file_path)
     except :
         print("board views down except")
         print("board views down except str(downtarget) :",str(downtarget))
@@ -306,12 +301,21 @@ def down(req): #media board pic
         print("board views down except type(downtarget) :",type(downtarget))
         file_path = str(settings.MEDIA_ROOT)+"\\"+str(downtarget)
         print("board views down except file_path :",file_path)
-        if os.path.exists(file_path):
-            with open(file_path, 'rb') as file:
-                response = HttpResponse(file.read(), content_type="application/vnd.ms-excel")
-                response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-                return response
-        raise Http404
+        return filedownload(file_path)
+def filedownload(file_path) :
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as file:
+            endpart = str(file_path).split(".")[-1]
+            print("board views filedownload if with endpart :",endpart)
+            if endpart == 'txt' :
+                response = HttpResponse(file.read(), content_type="application/txt; charset=utf-8")
+            elif endpart == 'zip' :
+                response = HttpResponse(file.read(), content_type="application/x-zip-compressed; charset=utf-8")
+            else :
+                response = HttpResponse(file.read(), content_type="application/vnd.ms-excel; charset=utf-8")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
 
 def change_img_qualty(targetid, change_path=str(settings.MEDIA_ROOT)+'\low\\boardpic\\', qualty=30):
     """

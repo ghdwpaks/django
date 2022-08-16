@@ -14,11 +14,15 @@
         <tr>
             <td class="btd" colspan="2" >{{ boardobj.name }}</td> 
             <td class="btd" colspan="2" rowspan="4">
-                
-                {% if  boardobj.getfilename == None or  boardobj.getfilename  == "" %}
-                <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm/{{ boardobj.getthum }}" height="150px">
-                {% else %}
-                <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm/media/{{ boardobj.getfilename }}" height="150px">
+                <h6>boardobj.getfilename : {{ boardobj.getfilename }}</h6>
+                <h6>boardobj.getthum : {{ boardobj.getthum }}</h6>
+                <h6>boardobj.getpicture : {{ boardobj.getpicture }}</h6>
+                {% if not boardobj.getpicture == "" %}
+                    <h6>4</h6>
+                    <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm/media/{{ boardobj.getpicture }}" height="150px">
+                {% elif not boardobj.getthum == "" or boardobj.getthum == '/media/nnopho.jpg'%}
+                    <h6>2</h6>
+                    <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm{{ boardobj.getthum }}" height="150px">
                 {% endif %}
             </td> 
         </tr>

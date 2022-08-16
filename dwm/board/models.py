@@ -34,13 +34,28 @@ class Board(models.Model) :
     def getthum(self):
         print("board models Board getthum")
         if self.thumbnail:
-            print("self.thumbnail.url :",self.thumbnail.url)
-            print("str(self.thumbnail.url).split('.')[-1] :",str(self.thumbnail.url).split(".")[-1])
-            print("str(self.thumbnail.url).split('.')[-1] in ['png','jpg','jpeg'] :",str(self.thumbnail.url).split('.')[-1] in ['png','jpg','jpeg'])
+            print("board models Board getthum self.thumbnail.url :",self.thumbnail.url)
+            print("board models Board getthum str(self.thumbnail.url).split('.')[-1] :",str(self.thumbnail.url).split(".")[-1])
+            print("board models Board getthum str(self.thumbnail.url).split('.')[-1] in ['png','jpg','jpeg'] :",str(self.thumbnail.url).split('.')[-1] in ['png','jpg','jpeg'])
+            print("board models Board getthum not str(self.thumbnail.url).split('.')[-1] in ['png','jpg','jpeg'] :",not str(self.thumbnail.url).split('.')[-1] in ['png','jpg','jpeg'])
             if not str(self.thumbnail.url).split('.')[-1] in ['png','jpg','jpeg'] :
                return "/media/nnopho.png"
             return self.thumbnail.url
-        return "/media/nno.jpg"
+        return "/media/nnopho.jpg"
+    def getpicture(self):
+        print("board models Board getfilename")
+        print("board models Board getfilename self.boardfile :",self.boardfile)
+        if (self.boardfile ) or not self.boardfile:
+            res = self.boardfile
+            print("board models Board getfilename if res :",res)
+            if type(res) == type("") :
+               res = res.split("/")[-1] 
+               print("board models Board getfilename if if res :",res)
+            if str(res) == "" : return ""
+            if not str(res).split('.')[-1] in ['png','jpg','jpeg'] :
+               return "nnopho.png"
+            return res
+        return "nnopho.jpg"
 
 
     def getfilename(self):
@@ -48,6 +63,7 @@ class Board(models.Model) :
         print("board models Board getfilename self.boardfile :",self.boardfile)
         if (self.boardfile ) or not self.boardfile:
             res = self.boardfile
+            print("board models Board getfilename if res :",res)
             if type(res) == type("") :
                res = res.split("/")[-1] 
                print("board models Board getfilename if if res :",res)
