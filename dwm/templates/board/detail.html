@@ -1,9 +1,7 @@
 {% extends 'header.html' %}
 {% block con %}
 {% load mathfilters %}
-
 <div align="left" style=" margin-left: 1%;">
-
     <table class="table table-bordered" border="0" style="width: 60%;">
         <tr>
             <th  class="btd" style="width: 25%">작성자 : </th>
@@ -14,14 +12,9 @@
         <tr>
             <td class="btd" colspan="2" >{{ boardobj.name }}</td> 
             <td class="btd" colspan="2" rowspan="4">
-                <h6>boardobj.getfilename : {{ boardobj.getfilename }}</h6>
-                <h6>boardobj.getthum : {{ boardobj.getthum }}</h6>
-                <h6>boardobj.getpicture : {{ boardobj.getpicture }}</h6>
                 {% if not boardobj.getpicture == "" %}
-                    <h6>4</h6>
                     <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm/media/{{ boardobj.getpicture }}" height="150px">
                 {% elif not boardobj.getthum == "" or boardobj.getthum == '/media/nnopho.jpg'%}
-                    <h6>2</h6>
                     <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm{{ boardobj.getthum }}" height="150px">
                 {% endif %}
             </td> 
@@ -35,7 +28,6 @@
             <th class="btd">조회수 : </th>
             <td class="btd">{{ boardobj.hits }}</td>
             <td colspan="2">
-                <!--<input class="btn btn-outline-success btn-lg btn-block" type="button" value="DOWNLOAD" onclick="down()">-->
                 {% if  boardobj.getfilename  == None or  boardobj.getfilename  == "" %}
                     <a href="{% url 'board:down' %}?downtarget={{ boardobj.getthum }}"><h5>DOWNLOAD CONTENT</h5></a>
                 {% else %}

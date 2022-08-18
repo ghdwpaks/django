@@ -30,10 +30,10 @@ def userlogin(req):
         username = req.POST.get("uname")
         userpassword = req.POST.get("upass")
         
-        UserObj = User.objects.get(username=username)
-        UserObj = authenticate(username=username, password=userpassword,nickname=UserObj.nickname,userid=UserObj.id)
-        if UserObj:
-            login(req, UserObj)
+        userobj = User.objects.get(username=username)
+        userobj = authenticate(username=username, password=userpassword,nickname=userobj.nickname,userid=userobj.id)
+        if userobj:
+            login(req, userobj)
             return redirect("dwm:index")
         else:
             pass 
@@ -48,34 +48,31 @@ def mod(req) :
     #req : request
     #tid : target id
     if req.method == "POST":
-        print("dwm views mod req.session :",req.session)
         tid = req.user.id
-        print("dwm views mod tid :",tid)
-        UserObj = User.objects.get(id=tid)
+        userobj = User.objects.get(id=tid)
+        # print("dwm views mod req.session :",req.session)
+        # print("dwm views mod tid :",tid)
         
         usernickname = req.POST.get("nickname")                                  
-        print("dwm views mod usernickname :",usernickname)
-        print("dwm views mod type(usernickname) :",usernickname)
-
         usercomment = req.POST.get("ucomm")
-        print("dwm views mod usercomment :",usercomment)
-        print("dwm views mod type(usercomment) :",usercomment)
-
         useremail = req.POST.get("umail")
-        print("dwm views mod useremail :",useremail)
-        print("dwm views mod type(useremail) :",useremail)
-
         userpicture = req.FILES.get("upic")
-        print("dwm views mod userpicture :",userpicture)
-        print("dwm views mod type(userpicture) :",userpicture)
+        # print("dwm views mod usernickname :",usernickname)
+        # print("dwm views mod type(usernickname) :",usernickname)
+        # print("dwm views mod usercomment :",usercomment)
+        # print("dwm views mod type(usercomment) :",usercomment)
+        # print("dwm views mod useremail :",useremail)
+        # print("dwm views mod type(useremail) :",useremail)
+        # print("dwm views mod userpicture :",userpicture)
+        # print("dwm views mod type(userpicture) :",userpicture)
 
-        UserObj.nickname = usernickname
-        UserObj.comment = usercomment
-        UserObj.email = useremail
+        userobj.nickname = usernickname
+        userobj.comment = usercomment
+        userobj.email = useremail
 
         if not userpicture == None :
-            UserObj.photo = userpicture
-        UserObj.save()
+            userobj.photo = userpicture
+        userobj.save()
         
 
         return redirect("dwm:index")

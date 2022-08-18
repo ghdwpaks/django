@@ -2,20 +2,6 @@
 {% block con %}
 <h1>Hello index in shop</h1>
 <table border="0" style="width: 400px; margin-left: 100px;">
-    <!-- 
-        
-        <tr class="menuobj">
-            <td>이름</td>
-            <td rowspan="2">그림</td>
-        </tr>
-        <tr class="menuobj">
-            <td >가격</td>
-        </tr>
-        <tr class="menuobj">
-            <td colspan="2">상품설명</td>
-        </tr>
-    -->
-        
     {% for i in s %}
         <tr class="menuobj">
             <td>{{ i.name }}</td>
