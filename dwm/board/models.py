@@ -29,6 +29,7 @@ class Board(models.Model) :
     boardfile = models.FileField(upload_to=("boardpic/"),blank=True,default=None)
     comment = models.TextField(blank=True)
     hits = models.IntegerField(default=0)
+    public = models.BooleanField(blank=True, default=True)
     
     
     def getthum(self):

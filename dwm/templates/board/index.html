@@ -19,15 +19,25 @@
         <th class="text-center align-middle btd" style="width: 30%;" colspan="2">WRITER</th>
     </tr>   
     {% for i in boardobj %}
-    
-        <tr>
+        {% if i.public == True %}
+            <tr>
                 <td class="text-center align-middle btd">{{ i.id }}</td> 
                 <td class="text-center align-middle btd"><a href="{% url 'board:detail' i.id %}"><img src="{{ i.getthum }}" height="150px"></a></td>
                 <td class="text-center align-middle btd">{{ i.name|truncatewords:8 }}</td>
                 <td class="text-center align-middle btd">{{ i.comment|truncatewords:5 }}</td>
                 <td class="text-center align-middle btd">{{ i.hits }}</td>
                 <td class="align-middle btd"><img src="/media/{{ i.writerops.photo }}" width="100px"></td>
-        </tr>
+            </tr>
+        {% elif i.public == False and user.username == i.writerops.username %}
+            <tr>
+                <td class="text-center align-middle btd">{{ i.id }}</td> 
+                <td class="text-center align-middle btd"><a href="{% url 'board:detail' i.id %}"><img src="{{ i.getthum }}" height="150px"></a></td>
+                <td class="text-center align-middle btd">{{ i.name|truncatewords:8 }}</td>
+                <td class="text-center align-middle btd">{{ i.comment|truncatewords:5 }}</td>
+                <td class="text-center align-middle btd">{{ i.hits }}</td>
+                <td class="align-middle btd"><img src="/media/{{ i.writerops.photo }}" width="100px"></td>
+            </tr>
+        {% endif %}
     
     {% empty %}
         <tr>

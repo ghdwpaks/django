@@ -27,6 +27,15 @@ def create(req):
             boardfile = req.FILES.get("file")
             name = req.POST.get("name")
             comment = req.POST.get("comment")
+            public = req.POST.get("public")
+            print("board views create if else public :",public)
+            print("board views create if else type(public) :",type(public))
+            if public == "able" :
+                print("board views create if else if public = True")
+                public = True
+            elif public == "disable" :
+                print("board views create if else if public = False")
+                public = False
             # print("board views create if else username :",username)
             # print("board views create if else usernickname :",usernickname)
             # print("board views create if else boardfile :",boardfile) #thumbnail : 20200927_161805.png
@@ -42,6 +51,7 @@ def create(req):
             # print("board views create if else b.boardfile :",b.boardfile) #thumbnail : 20200927_161805.png
             # print("board views create if else type(b.boardfile) :",type(b.boardfile)) #thumbnail : 20200927_161805.png
             b.credate = Timezone.now()
+            b.public = public
             b.save()
             # print("board views create if else b :",b)
             # print("board views create if else type(b) :",type(b))
@@ -173,6 +183,9 @@ def mod(req, tr):
                 name = req.POST.get("name")
                 thumbnail = req.FILES.get("thumbnail")
                 comment = req.POST.get("comment")
+                public = req.POST.get("public")
+                if public == "able" : public = True
+                elif public == "disable" : public = False
                 # print("board views mod if if name :",name)
                 # print("board views mod if if thumbnail :",thumbnail)
                 # print("board views mod if if comment :",comment)
@@ -181,6 +194,7 @@ def mod(req, tr):
                     #print("board views mod if if if changethumnail? : yes")
                 boardobj.name = name
                 boardobj.comment = comment
+                boardobj.public = public
                 boardobj.save()
                 boardobj = Board.objects.get(id=tr)
                 context = {
@@ -265,14 +279,28 @@ def detail(req, tr) :
     #print("board views detail boardobj.comment :",boardobj.comment)
     boardobj.hits = boardobj.hits+1
     boardobj.save()
+    print("board views detail boardobj.public :",boardobj.public)
+    print("board views detail type(boardobj.public) :",type(boardobj.public))
+    print("board views detail boardobj.writerops.username :",boardobj.writerops.username)
+    print("board views detail type(boardobj.writerops.username) :",type(boardobj.writerops.username))
+    print("board views detail req.user.username :",req.user.username)
+    print("board views detail type(req.user.username) :",type(req.user.username))
+    if boardobj.public == True :
+        print("board views detail if")
+    elif boardobj.public == False and str(boardobj.writerops.username) == req.user.username:
+        print("board views detail elif 1")
+    else :
+        print("board views detail else")
+        return redirect("board:index")
+        
     replyobj = Reply.objects.filter(comment_id=tr)
     replyobj = replyobj.order_by('-id')
-    # print("board views detail ReplyObj 2:",replyobj)
+    #print("board views detail ReplyObj 2:",replyobj)
     context = {
         "boardobj" : boardobj,
         "replyobj" : replyobj
     }
-    # print("board views detail tried t")
+    #print("board views detail tried t")
     return render(req, "board/detail.html",context)
 
 def down(req): #media board pic
