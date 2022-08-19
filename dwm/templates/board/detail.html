@@ -5,27 +5,22 @@
     <table class="table table-bordered" border="0" style="width: 60%;">
         <tr>
             <th  class="btd" style="width: 25%">작성자 : </th>
-            <td  class="btd" style="width: 25%">{{ boardobj.writernick }}</td>
+            <td  class="btd" style="width: 25%">{{ boardobj.writerops.nickname }}</td>
             <th  class="btd" style="width: 25%">작성일자 : </th>
             <td  class="btd" style="width: 25%">{{ boardobj.credate }}</td>
         </tr>   
         <tr>
-            <td class="btd" colspan="2" >{{ boardobj.name }}</td> 
-            <td class="btd" colspan="2" rowspan="4">
-                {% if not boardobj.getpicture == "" %}
-                    <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm/media/{{ boardobj.getpicture }}" height="150px">
-                {% elif not boardobj.getthum == "" or boardobj.getthum == '/media/nnopho.jpg'%}
-                    <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm{{ boardobj.getthum }}" height="150px">
-                {% endif %}
-            </td> 
+            <th>제목 :</th>
+            <td class="btd" colspan="3" >{{ boardobj.name }}</td>
         </tr>
         <tr>
-            <td class="btd" colspan="2" rowspan="3">{{ boardobj.comment }}</td>
+            <th>내용 :</th>
+            <td class="btd" colspan="3" rowspan="3">{{ boardobj.comment }}</td>
         </tr>
         <tr></tr>
         <tr></tr>
 
-        {% for i in photos %}
+        {% for i in files %}
         <tr>
             <td colspan="4">
                 <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm/media/{{i.image}}" height="150px">

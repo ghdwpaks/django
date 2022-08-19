@@ -26,7 +26,6 @@ class Board(models.Model) :
     credate = models.DateTimeField(default=datetime.now())
     name = models.CharField(max_length=100,default="게시글",blank=True)
     thumbnail = models.ImageField(upload_to=("low/boardpic/"),blank=True,default=None)
-    boardfile = models.FileField(upload_to=("boardpic/"),blank=True,default=None)
     comment = models.TextField(blank=True)
     hits = models.IntegerField(default=0)
     public = models.BooleanField(blank=True, default=True)
@@ -43,46 +42,15 @@ class Board(models.Model) :
                return "/media/nnopho.png"
             return self.thumbnail.url
         return "/media/nnopho.jpg"
-    def getpicture(self):
-        # print("board models Board getfilename")
-        # print("board models Board getfilename self.boardfile :",self.boardfile)
-        if (self.boardfile ) or not self.boardfile:
-            res = self.boardfile
-            # print("board models Board getfilename if res :",res)
-            if type(res) == type("") :
-               res = res.split("/")[-1] 
-               # print("board models Board getfilename if if res :",res)
-            if str(res) == "" : return ""
-            if not str(res).split('.')[-1] in ['png','jpg','jpeg'] :
-               return "nnopho.png"
-            return res
-        return "nnopho.jpg"
-
-
-    def getfilename(self):
-        # print("board models Board getfilename")
-        # print("board models Board getfilename self.boardfile :",self.boardfile)
-        if (self.boardfile ) or not self.boardfile:
-            res = self.boardfile
-            # print("board models Board getfilename if res :",res)
-            if type(res) == type("") :
-               res = res.split("/")[-1] 
-               # print("board models Board getfilename if if res :",res)
-            return res
-        return "/media/nno.jpg"
-
-    def getid(self) :
-        return self.id
-
         
     
 
     def __str__(self):
         return str(self.id)+" "+str(self.name)
 
-class Photo(models.Model) :
+class File(models.Model) :
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    boardops = models.ForeignKey(Board, related_name="photo",on_delete=models.CASCADE, null=True)
+    boardops = models.ForeignKey(Board, related_name="file",on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to=('boardpic/'),blank=True, null=True)
     def __str__(self):
         return str(self.boardops.name)+" "+str(self.id)

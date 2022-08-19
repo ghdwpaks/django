@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-from .models import Board, Photo
+from .models import Board, File
 from .models import Reply
 from django.utils import timezone as Timezone
 from dwm.models import User
@@ -9,7 +9,6 @@ from config import settings
 import os
 from django.http import HttpResponse 
 from django.http import Http404 
-from django.core.files import File
 # Create your views here.
 
 def gotoindex(req) :
@@ -24,7 +23,6 @@ def create(req):
             
             username = req.user.username
             usernickname = req.user.nickname
-            boardfile = req.FILES.get("file")
             name = req.POST.get("name")
             comment = req.POST.get("comment")
             public = req.POST.get("public")
@@ -37,9 +35,7 @@ def create(req):
                 print("board views create if else if public = False")
                 public = False
             # print("board views create if else username :",username)
-            # print("board views create if else usernickname :",usernickname)
-            # print("board views create if else boardfile :",boardfile) #thumbnail : 20200927_161805.png
-            # print("board views create if else type(boardfile) :",type(boardfile)) #thumbnail : 20200927_161805.png
+            # print("board views create if else usernickname :",usernickname)20200927_161805.png
             # print("board views create if else name :",name)
             # print("board views create if else comment :",comment)
             creatinguser = User.objects.get(username=username)
@@ -47,49 +43,17 @@ def create(req):
             b.name = name
             b.writerops = creatinguser
             b.comment = comment
-            b.boardfile = boardfile
-            # print("board views create if else b.boardfile :",b.boardfile) #thumbnail : 20200927_161805.png
-            # print("board views create if else type(b.boardfile) :",type(b.boardfile)) #thumbnail : 20200927_161805.png
             b.credate = Timezone.now()
             b.public = public
             b.save()
             # print("board views create if else b :",b)
             # print("board views create if else type(b) :",type(b))
             # print("board views create if else b.id :",b.id)
-
-
-            # print("str(boardfile) :",str(boardfile))
-            # print("str(boardfile).split('.') :",str(boardfile).split('.'))
-            # print("str(boardfile).split('.')[-1] :",str(boardfile).split('.')[-1])
-            # print("str(boardfile).split('.')[-1] in ['png','jpg','jpeg']  :",str(boardfile).split('.')[-1] in ['png','jpg','jpeg'] )
-
-            if str(boardfile).split('.')[-1] in ['png','jpg','jpeg'] :
-
-                change_path=str(settings.MEDIA_ROOT)+'\low\\boardpic\\'
-                # print("baord views create b :",b)
-                # print("baord views create type(b) :",type(b))
-                # print("baord views create b.getfilename() :",b.getfilename())
-                # print("baord views create type(b.getfilename()) :",type(b.getfilename()))
-                filename = str(b.getfilename()).split("/")[-1]
-                # print("baord views create filename :",filename)
-                original_path = str(settings.MEDIA_ROOT)+'\\boardpic\\'
-                file = original_path + filename
-
-
-                # print("baord views create file :",file)
-                # print("baord views create type(file) :",type(file))
-
-                img = Image.open(file,'r')
-                # print("baord view try im 1")
-                img_resize = img.resize((int(img.width / 5), int(img.height / 5)))
-                img_resize.save(change_path+filename, qualty=30)
-                # print("baord view try im 2")
-                # print("baord view try img_resize :",img_resize)
-                # print("baord view try type(img_resize) :",type(img_resize))
-                # print("baord view try img :",img)
-                # print("baord view try type(img) :",type(img))
-                b.thumbnail = str(change_path+filename)
-
+            for img in req.FILES.getlist('imgs'):
+                photo = File()
+                photo.boardops = b
+                photo.image = img
+                photo.save()
             b.save()
             # print("baord view try im 3")
             # print("baord view try im 4")
@@ -276,14 +240,14 @@ def detail(req, tr) :
     print("board views detail boardobj.name :",boardobj.name)
     print("board views detail boardobj.thumbnail :",boardobj.thumbnail)
     print("board views detail boardobj.comment :",boardobj.comment)
-    photos = Photo.objects.filter(boardops=boardobj)
-    print("board views detail photos :",photos)
-    print("board views detail type(photos) :",type(photos))
+    files = File.objects.filter(boardops=boardobj)
+    print("board views detail files :",files)
+    print("board views detail type(files) :",type(files))
     try :
-        print("board views detail try photos.boardops :",photos.boardops)
-        print("board views detail try type(photos.boardops) :",type(photos.boardops))
-        print("board views detail try photos.image :",photos.image)
-        print("board views detail try type(photos.image) :",type(photos.image))
+        print("board views detail try files.boardops :",files.boardops)
+        print("board views detail try type(files.boardops) :",type(files.boardops))
+        print("board views detail try files.image :",files.image)
+        print("board views detail try type(files.image) :",type(files.image))
     except :
         print("error from board views detail except")
     boardobj.hits = boardobj.hits+1
@@ -310,7 +274,7 @@ def detail(req, tr) :
     context = {
         "boardobj" : boardobj,
         "replyobj" : replyobj,
-        "photos": photos
+        "files": files
     }
     #print("board views detail tried t")
     return render(req, "board/detail.html",context)
