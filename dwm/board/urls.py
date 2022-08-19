@@ -9,6 +9,7 @@ urlpatterns = [
     path('down/',views.down,name="down"),
     path('detail/<tr>',views.detail,name="detail"),
     path('mod/<tr>',views.mod,name="mod"),
+    path('imgdel/<imgid>/<boardtr>',views.imgdel,name="imgdel"),
     path('delete/<tr>',views.delete,name="delete"),
     path('reply/<tr>',views.reply,name="reply"),
     path('reply/del/<replytr>/<boardtr>',views.replydel,name="replydel"),

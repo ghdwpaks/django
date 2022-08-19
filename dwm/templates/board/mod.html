@@ -10,12 +10,25 @@
                 <td class="btd"><input type="text" name="name" value="{{ boardobj.name }}" placeholder="INPUT SUBJECT"></td>
             </tr>
             <tr>
-                <td class="btd"><b>파일</b></td>
-                <td class="btd"><input type="file" name="files" multiple> </td>
-            </tr>
-            <tr>
                 <td class="btd"><b>내용</b></td>
                 <td class="btd"><textarea cols="60" name="comment" rows="6" placeholder="INPUT CONTENT">{{ boardobj.comment }}</textarea></td>
+            </tr>
+            {% for i in files %}
+            <tr>
+
+                <td class="btd">
+                    <h6>i.id : {{ i.id }}</h6>
+                    <input class="btn btn-danger btn-lg" type="button" value="DELETE" style="width: 100px;" onclick="goimgdel({{i.id}},{{boardobj.id}})">
+                </td>
+                <td colspan="4">
+                    <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm/media/{{i.image}}" height="150px">
+                </td>
+            </tr>
+            {% empty %}
+            {% endfor %}
+            <tr>
+                <td class="btd"><b>파일</b></td>
+                <td class="btd"><input type="file" name="files" multiple> </td>
             </tr>
             <tr>
                 <td class="btd"><b>공개여부</b></td>
@@ -36,6 +49,9 @@
         
     </form>
     <script>
+        function goimgdel(imgid,boardid) {
+            location.href='/board/imgdel/'+imgid+'/'+boardid
+        }
         function godel() {
             location.href='/board/delete/{{boardobj.id}}'
         }

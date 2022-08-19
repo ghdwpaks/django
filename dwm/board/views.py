@@ -49,7 +49,6 @@ def create(req):
             print("board views create if else b :",b)
             print("board views create if else type(b) :",type(b))
             print("board views create if else b.id :",b.id)
-            i = True
             for img in req.FILES.getlist('files'):
                 print("board views create if else for img : ",img)
                 print("board views create if else for str(img) : ",str(img))
@@ -57,38 +56,32 @@ def create(req):
                 photo.boardops = b
                 photo.image = img
                 photo.save()
-                print("board views create if else for before if")
-                if i :
-                    print("board views create if else for if i: ",i)
-                    print("board views create if else for if type(i): ",type(i))
-                    print("board views create if else for if str(img) :",str(img))
-                    print("board views create if else for if str(img).split('.') :",str(img).split('.'))
-                    print("board views create if else for if str(img).split('.')[-1] :",str(img).split('.')[-1])
-                    if str(img).split(".")[-1] in ['png','jpg','jpeg'] :
-                        print("board views create if else for if if")
-                        change_path=str(settings.MEDIA_ROOT)+'\low\\boardpic\\'
-                        original_path = str(settings.MEDIA_ROOT)+'\\boardpic\\'
-                        
-                        print("board views create if else for if if change_path :",change_path)
-                        print("board views create if else for if if original_path :",original_path)
-                        filename = str(photo.image).split("/")[-1]
-                        print("board views create if else for if if filename :",filename)
-                        print("board views create if else for if if type(filename) :",type(filename))
-                        file = original_path + filename
-                        print("board views create if else for if if file :",file)
-                        print("board views create if else for if if type(file) :",type(file))
-                        img = Image.open(file,'r')
-                        print("board views create if else for if if img :",img)
-                        print("board views create if else for if if type(img) :",type(img))
-                        img_resize = img.resize((int(img.width / 5), int(img.height / 5)))
-                        print("board views create if else for if if 1 img_resize :",img_resize)
-                        print("board views create if else for if if 1 type(img_resize) :",type(img_resize))
-                        img_resize.save(change_path+filename, qualty=30)
-                        print("board views create if else for if if 2 img_resize :",img_resize)
-                        print("board views create if else for if if 2 type(img_resize) :",type(img_resize))
-                        b.thumbnail = str(change_path+filename)
-
-            b.save()
+                print("board views create if else for if str(img) :",str(img))
+                print("board views create if else for if str(img).split('.') :",str(img).split('.'))
+                print("board views create if else for if str(img).split('.')[-1] :",str(img).split('.')[-1])
+                if str(img).split(".")[-1] in ['png','jpg','jpeg'] :
+                    print("board views create if else for if if")
+                    change_path=str(settings.MEDIA_ROOT)+'\low\\boardpic\\'
+                    original_path = str(settings.MEDIA_ROOT)+'\\boardpic\\'
+                    filename = str(photo.image).split("/")[-1]
+                    file = original_path + filename
+                    img = Image.open(file,'r')
+                    img_resize = img.resize((int(img.width / 5), int(img.height / 5)))
+                    print("board views create if else for if if change_path :",change_path)
+                    print("board views create if else for if if original_path :",original_path)
+                    print("board views create if else for if if filename :",filename)
+                    print("board views create if else for if if type(filename) :",type(filename))
+                    print("board views create if else for if if file :",file)
+                    print("board views create if else for if if type(file) :",type(file))
+                    print("board views create if else for if if img :",img)
+                    print("board views create if else for if if type(img) :",type(img))
+                    print("board views create if else for if if 1 img_resize :",img_resize)
+                    print("board views create if else for if if 1 type(img_resize) :",type(img_resize))
+                    img_resize.save(change_path+filename, qualty=30)
+                    print("board views create if else for if if 2 img_resize :",img_resize)
+                    print("board views create if else for if if 2 type(img_resize) :",type(img_resize))
+                    b.thumbnail = str(change_path+filename)
+                    b.save()
             # print("baord view try im 3")
             # print("baord view try im 4")
             '''
@@ -188,7 +181,7 @@ def mod(req, tr):
             # print("board views mod boardobj.writername :",boardobj.writername)
             # print("board views mod req.user.username :",req.user.username)
             if boardobj.writerops.username == req.user.username :
-
+                
                 name = req.POST.get("name")
                 thumbnail = req.FILES.get("thumbnail")
                 comment = req.POST.get("comment")
@@ -205,9 +198,53 @@ def mod(req, tr):
                 boardobj.comment = comment
                 boardobj.public = public
                 boardobj.save()
+                
+                for img in req.FILES.getlist('files'):
+                    print("board views mod if else if for img : ",img)
+                    print("board views mod if else if for str(img) : ",str(img))
+                    photo = File()
+                    photo.boardops = boardobj
+                    photo.image = img
+                    photo.save()
+                    if str(img).split(".")[-1] in ['png','jpg','jpeg'] :
+                        print("board views create if else for if if")
+                        change_path=str(settings.MEDIA_ROOT)+'\low\\boardpic\\'
+                        original_path = str(settings.MEDIA_ROOT)+'\\boardpic\\'
+                        filename = str(photo.image).split("/")[-1]
+                        file = original_path + filename
+                        img = Image.open(file,'r')
+                        img_resize = img.resize((int(img.width / 5), int(img.height / 5)))
+                        print("board views create if else for if if change_path :",change_path)
+                        print("board views create if else for if if original_path :",original_path)
+                        print("board views create if else for if if filename :",filename)
+                        print("board views create if else for if if type(filename) :",type(filename))
+                        print("board views create if else for if if file :",file)
+                        print("board views create if else for if if type(file) :",type(file))
+                        print("board views create if else for if if img :",img)
+                        print("board views create if else for if if type(img) :",type(img))
+                        print("board views create if else for if if 1 img_resize :",img_resize)
+                        print("board views create if else for if if 1 type(img_resize) :",type(img_resize))
+                        img_resize.save(change_path+filename, qualty=30)
+                        print("board views create if else for if if 2 img_resize :",img_resize)
+                        print("board views create if else for if if 2 type(img_resize) :",type(img_resize))
+                        boardobj.thumbnail = str(change_path+filename)
+                        boardobj.save()
+                
+                files = File.objects.filter(boardops=boardobj)
+                if len(files) == 0 :
+                    boardobj.thumbnail = None
+                    boardobj.save()
+                print("board views mod if else if files :",files)
+                
+                print("board views mod if else if type(files) :",type(files))
+                
                 boardobj = Board.objects.get(id=tr)
+                replyobj = Reply.objects.filter(comment_id=tr)
+                replyobj = replyobj.order_by('-id')
                 context = {
-                    "boardobj" : boardobj
+                    "boardobj" : boardobj,
+                    "replyobj" : replyobj,
+                    "files": files
                 }
                 return render(req, "board/detail.html",context)
     
@@ -223,8 +260,10 @@ def mod(req, tr):
             # print("board views mod req.user.username :",req.user.username)
             if boardobj.writerops.username == req.user.username :
                 # print("board views mod over if")
+                files = File.objects.filter(boardops=boardobj)
                 context = {
-                    "boardobj" : boardobj
+                    "boardobj" : boardobj,
+                    "files": files
                 }
                 return render(req, "board/mod.html",context)
 
@@ -257,6 +296,16 @@ def replydel(req, replytr,boardtr):
             # print("board views mod req.user.username :",req.user.username)
             if r.reply_writerops.username == req.user.username : r.delete()
             return redirect("/board/detail/"+boardtr)
+def imgdel(req,imgid,boardtr) :
+    if req.method == "GET":
+        
+        if req.user.username == None or req.user.username == "" :
+            return redirect("board:index")
+        else :
+            r = File.objects.get(id=imgid)
+            if r.boardops.writerops.username == req.user.username :
+                r.delete()
+                return redirect("/board/mod/"+boardtr)
 
 def delete(req, tr):
     if req.method == "GET":
