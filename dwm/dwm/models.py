@@ -12,12 +12,11 @@ class User(AbstractUser) :
     credate = models.DateTimeField(default=datetime.now())
     deldate = models.DateTimeField(null=True)
     repcount = models.IntegerField(default=0)
-
     
     def getphoto(self):
-        print("dwm models User getphoto")
+        # print("dwm models User getphoto")
         if self.photo:
-            print("self.photo.url :",self.photo.url)
+            # print("self.photo.url :",self.photo.url)
             return self.photo.url
         return "/media/no.jpg"
 

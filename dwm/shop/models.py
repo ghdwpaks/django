@@ -11,9 +11,9 @@ class Shop(models.Model) :
 
     
     def getpic(self):
-        print("shop models Shop getpic")
+        # print("shop models Shop getpic")
         if self.pic:
-            print("self.pic.url :",self.pic.url)
+            # print("self.pic.url :",self.pic.url)
             return self.pic.url
         return "/media/nno.jpg"
         

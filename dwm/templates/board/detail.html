@@ -24,6 +24,16 @@
         </tr>
         <tr></tr>
         <tr></tr>
+
+        {% for i in photos %}
+        <tr>
+            <td colspan="4">
+                <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm/media/{{i.image}}" height="150px">
+            </td>
+        </tr>
+        {% empty %}
+        {% endfor %}
+
         <tr>
             <th class="btd">조회수 : </th>
             <td class="btd">{{ boardobj.hits }}</td>

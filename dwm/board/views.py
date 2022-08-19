@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-from .models import Board
+from .models import Board, Photo
 from .models import Reply
 from django.utils import timezone as Timezone
 from dwm.models import User
@@ -266,31 +266,42 @@ def delete(req, tr):
 
 
 def detail(req, tr) :
-    # print("board views detail tr :",tr)
+    print("board views detail tr :",tr)
     #tr : target raw
     boardobj = Board.objects.get(id=tr)
-    #print("board views detail boardobj :",boardobj)
-    #print("board views detail type(boardobj) :",type(boardobj))
-    #print("board views detail boardobj.id :",boardobj.id)
-    #print("board views detail boardobj.writernick :",boardobj.writernick)
-    #print("board views detail boardobj.credate :",boardobj.credate)
-    #print("board views detail boardobj.name :",boardobj.name)
-    #print("board views detail boardobj.thumbnail :",boardobj.thumbnail)
-    #print("board views detail boardobj.comment :",boardobj.comment)
+    print("board views detail boardobj :",boardobj)
+    print("board views detail type(boardobj) :",type(boardobj))
+    print("board views detail boardobj.id :",boardobj.id)
+    print("board views detail boardobj.credate :",boardobj.credate)
+    print("board views detail boardobj.name :",boardobj.name)
+    print("board views detail boardobj.thumbnail :",boardobj.thumbnail)
+    print("board views detail boardobj.comment :",boardobj.comment)
+    photos = Photo.objects.filter(boardops=boardobj)
+    print("board views detail photos :",photos)
+    print("board views detail type(photos) :",type(photos))
+    try :
+        print("board views detail try photos.boardops :",photos.boardops)
+        print("board views detail try type(photos.boardops) :",type(photos.boardops))
+        print("board views detail try photos.image :",photos.image)
+        print("board views detail try type(photos.image) :",type(photos.image))
+    except :
+        print("error from board views detail except")
     boardobj.hits = boardobj.hits+1
     boardobj.save()
-    print("board views detail boardobj.public :",boardobj.public)
-    print("board views detail type(boardobj.public) :",type(boardobj.public))
-    print("board views detail boardobj.writerops.username :",boardobj.writerops.username)
-    print("board views detail type(boardobj.writerops.username) :",type(boardobj.writerops.username))
-    print("board views detail req.user.username :",req.user.username)
-    print("board views detail type(req.user.username) :",type(req.user.username))
+    # print("board views detail boardobj.public :",boardobj.public)
+    # print("board views detail type(boardobj.public) :",type(boardobj.public))
+    # print("board views detail boardobj.writerops.username :",boardobj.writerops.username)
+    # print("board views detail type(boardobj.writerops.username) :",type(boardobj.writerops.username))
+    # print("board views detail req.user.username :",req.user.username)
+    # print("board views detail type(req.user.username) :",type(req.user.username))
     if boardobj.public == True :
-        print("board views detail if")
+        # print("board views detail if")
+        pass
     elif boardobj.public == False and str(boardobj.writerops.username) == req.user.username:
-        print("board views detail elif 1")
+        # print("board views detail elif 1")
+        pass
     else :
-        print("board views detail else")
+        # print("board views detail else")
         return redirect("board:index")
         
     replyobj = Reply.objects.filter(comment_id=tr)
@@ -298,7 +309,8 @@ def detail(req, tr) :
     #print("board views detail ReplyObj 2:",replyobj)
     context = {
         "boardobj" : boardobj,
-        "replyobj" : replyobj
+        "replyobj" : replyobj,
+        "photos": photos
     }
     #print("board views detail tried t")
     return render(req, "board/detail.html",context)
