@@ -46,17 +46,62 @@ def create(req):
             b.credate = Timezone.now()
             b.public = public
             b.save()
-            # print("board views create if else b :",b)
-            # print("board views create if else type(b) :",type(b))
-            # print("board views create if else b.id :",b.id)
-            for img in req.FILES.getlist('imgs'):
+            print("board views create if else b :",b)
+            print("board views create if else type(b) :",type(b))
+            print("board views create if else b.id :",b.id)
+            i = True
+            for img in req.FILES.getlist('files'):
+                print("board views create if else for img : ",img)
+                print("board views create if else for str(img) : ",str(img))
                 photo = File()
                 photo.boardops = b
                 photo.image = img
                 photo.save()
+                print("board views create if else for before if")
+                if i :
+                    print("board views create if else for if i: ",i)
+                    print("board views create if else for if type(i): ",type(i))
+                    print("board views create if else for if str(img) :",str(img))
+                    print("board views create if else for if str(img).split('.') :",str(img).split('.'))
+                    print("board views create if else for if str(img).split('.')[-1] :",str(img).split('.')[-1])
+                    if str(img).split(".")[-1] in ['png','jpg','jpeg'] :
+                        print("board views create if else for if if")
+                        change_path=str(settings.MEDIA_ROOT)+'\low\\boardpic\\'
+                        original_path = str(settings.MEDIA_ROOT)+'\\boardpic\\'
+                        
+                        print("board views create if else for if if change_path :",change_path)
+                        print("board views create if else for if if original_path :",original_path)
+                        filename = str(photo.image).split("/")[-1]
+                        print("board views create if else for if if filename :",filename)
+                        print("board views create if else for if if type(filename) :",type(filename))
+                        file = original_path + filename
+                        print("board views create if else for if if file :",file)
+                        print("board views create if else for if if type(file) :",type(file))
+                        img = Image.open(file,'r')
+                        print("board views create if else for if if img :",img)
+                        print("board views create if else for if if type(img) :",type(img))
+                        img_resize = img.resize((int(img.width / 5), int(img.height / 5)))
+                        print("board views create if else for if if 1 img_resize :",img_resize)
+                        print("board views create if else for if if 1 type(img_resize) :",type(img_resize))
+                        img_resize.save(change_path+filename, qualty=30)
+                        print("board views create if else for if if 2 img_resize :",img_resize)
+                        print("board views create if else for if if 2 type(img_resize) :",type(img_resize))
+                        b.thumbnail = str(change_path+filename)
+
             b.save()
             # print("baord view try im 3")
             # print("baord view try im 4")
+            '''
+            if str(boardfile).split('.')[-1] in ['png','jpg','jpeg'] :
+                change_path=str(settings.MEDIA_ROOT)+'\low\\boardpic\\'
+                filename = str(b.getfilename()).split("/")[-1]
+                original_path = str(settings.MEDIA_ROOT)+'\\boardpic\\'
+                file = original_path + filename
+                img = Image.open(file,'r')
+                img_resize = img.resize((int(img.width / 5), int(img.height / 5)))
+                img_resize.save(change_path+filename, qualty=30)
+                b.thumbnail = str(change_path+filename)
+            '''
 
 
 
