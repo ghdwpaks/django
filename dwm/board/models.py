@@ -52,5 +52,42 @@ class File(models.Model) :
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     boardops = models.ForeignKey(Board, related_name="file",on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to=('boardpic/'),blank=True, null=True)
+    def getimage(self) :
+        print("board models File getimage self.image :",self.image)
+        print("board models File getimage self.image :",self.image)
+        try :
+            print("board models File getimage self.image.url :",self.image.url)
+        except :
+            print("board models File getimage self.image.url : error")
+        if self.image :
+            if not str(self.image).split(".")[-1] in ['png','jpg','jpeg'] :
+                return "nnopho.png"
+            return self.image
+        return "nnopho.png"
+    
+    def getfile(self) :
+        print("board models File getfile self.image :",self.image)
+        print("board models File getfile self.image :",self.image)
+        try :
+            print("board models File getfile self.image.url :",self.image.url)
+        except :
+            print("board models File getfile self.image.url : error")
+        if self.image :
+            return self.image.url
+        return "/media/nnopho.png"
+    
+    def getfilename(self) :
+        print("board models File getfile self.image :",self.image)
+        print("board models File getfile self.image :",self.image)
+        try :
+            print("board models File getfile self.image.url :",self.image.url)
+        except :
+            print("board models File getfile self.image.url : error")
+        if self.image :
+            return str(self.image.url).split("/")[-1]
+        return "/media/nnopho.png"
+
+
     def __str__(self):
         return str(self.boardops.name)+" "+str(self.id)
+    

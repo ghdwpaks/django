@@ -23,7 +23,14 @@
         {% for i in files %}
         <tr>
             <td colspan="4">
-                <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm/media/{{i.image}}" height="150px">
+                <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm/media/{{i.getimage}}" height="150px">
+                <h5><b>{{ i.getfilename }}</b></h5>
+            </td>
+        </tr>
+        <tr>
+            
+            <td colspan="4">
+                <a href="{% url 'board:down' %}?downtarget={{ i.getfile }}"><h5>DOWNLOAD CONTENT</h5></a>
             </td>
         </tr>
         {% empty %}
@@ -32,13 +39,7 @@
         <tr>
             <th class="btd">조회수 : </th>
             <td class="btd">{{ boardobj.hits }}</td>
-            <td colspan="2">
-                {% if  boardobj.getfilename  == None or  boardobj.getfilename  == "" %}
-                    <a href="{% url 'board:down' %}?downtarget={{ boardobj.getthum }}"><h5>DOWNLOAD CONTENT</h5></a>
-                {% else %}
-                    <a href="{% url 'board:down' %}?downtarget={{ boardobj.getfilename }}"><h5>DOWNLOAD CONTENT</h5></a>
-                {% endif %}
-            </td>
+            <td colspan="4"></td>
         </tr>
         <tr>
             <td>
@@ -84,8 +85,8 @@
 </div>
 <div style="height: 60%;"></div>
 <script>
-    function down() {
-        location.href='/board/down/'
+    function down(tr) {
+        location.href="/board/down/?downtarget="+tr
     }
     function gomod() {
         location.href='/board/mod/{{boardobj.id}}'

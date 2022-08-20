@@ -15,13 +15,18 @@
             </tr>
             {% for i in files %}
             <tr>
-
+                <td></td>
+                <td colspan="3">
+                    <h5><b>{{ i.getfilename }}</b></h5>
+                </td>
+            </tr>
+            <tr>
                 <td class="btd">
                     <h6>i.id : {{ i.id }}</h6>
                     <input class="btn btn-danger btn-lg" type="button" value="DELETE" style="width: 100px;" onclick="goimgdel({{i.id}},{{boardobj.id}})">
                 </td>
                 <td colspan="4">
-                    <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm/media/{{i.image}}" height="150px">
+                    <img style="height: 300px;" src="/media/C%3A/workspace/django/dwm/media/{{i.getimage}}" height="150px">
                 </td>
             </tr>
             {% empty %}

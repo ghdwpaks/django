@@ -374,28 +374,28 @@ def detail(req, tr) :
     return render(req, "board/detail.html",context)
 
 def down(req): #media board pic
-    # print("board views down entered")
+    print("board views down entered")
     downtarget = req.GET.get("downtarget","/media/no.jpg")
-    # print("board views down downtarget :",downtarget)
-    # print("board views down type(downtarget) :",type(downtarget))
-    # print("board views down str(settings.MEDIA_ROOT) :",str(settings.MEDIA_ROOT))
+    print("board views down downtarget :",downtarget)
+    print("board views down type(downtarget) :",type(downtarget))
+    print("board views down str(settings.MEDIA_ROOT) :",str(settings.MEDIA_ROOT))
     
     file_path = os.path.join(str(settings.MEDIA_ROOT)+"", downtarget)
-    # print("board views down file_path :",file_path)
+    print("board views down file_path :",file_path)
     try :
-        # print("board views down try")
+        print("board views down try")
         return filedownload(file_path)
     except :
-        # print("board views down except")
-        # print("board views down except str(downtarget) :",str(downtarget))
-        # print("board views down except str(downtarget).split('/') :",str(downtarget).split('/'))
-        # print("board views down except str(downtarget).split('/')[2:] :",str(downtarget).split('/')[2:])
-        # print("board views down except '\\'.join(str(downtarget).split('/')[2:]) :",'\\'.join(str(downtarget).split('/')[2:]))
+        print("board views down except")
+        print("board views down except str(downtarget) :",str(downtarget))
+        print("board views down except str(downtarget).split('/') :",str(downtarget).split('/'))
+        print("board views down except str(downtarget).split('/')[2:] :",str(downtarget).split('/')[2:])
+        print("board views down except '\\'.join(str(downtarget).split('/')[2:]) :",'\\'.join(str(downtarget).split('/')[2:]))
         downtarget = '\\'.join(str(downtarget).split('/')[2:])
-        # print("board views down except downtarget :",downtarget)
-        # print("board views down except type(downtarget) :",type(downtarget))
+        print("board views down except downtarget :",downtarget)
+        print("board views down except type(downtarget) :",type(downtarget))
         file_path = str(settings.MEDIA_ROOT)+"\\"+str(downtarget)
-        # print("board views down except file_path :",file_path)
+        print("board views down except file_path :",file_path)
         return filedownload(file_path)
 def filedownload(file_path) :
     if os.path.exists(file_path):
