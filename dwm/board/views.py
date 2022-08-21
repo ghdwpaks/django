@@ -391,6 +391,48 @@ def detail(req, tr) :
     #print("board views detail tried t")
     return render(req, "board/detail.html",context)
 
+
+def userdetail(req, tr) :
+    #not get username by GET.
+    #get board raw id first, and search in back.
+    #use username only backend.
+    print("board views detail tr :",tr)
+    #tr : target raw
+    page = req.GET.get("page",1)
+    orber = req.GET.get("order","di")
+    
+
+    
+    boardobj = Board.objects.get(id=tr)
+    userops = User.objects.get(username=boardobj.writerops.username)
+    boardobj = Board.objects.filter(writerops=userops)
+    if orber == "ud":
+        boardobj = boardobj.order_by('credate')
+    elif orber == "dd" :
+        boardobj = boardobj.order_by('-credate')
+    if orber == "ui":
+        boardobj = boardobj.order_by('id')
+    elif orber == "di" :
+        boardobj = boardobj.order_by('-id')
+    pagedata = Paginator(boardobj, 5)
+    boardobj = pagedata.get_page(page)
+    print()
+    #if req.user.username 
+    print("board views index req.user :",req.user)
+    print("board views index req.user.username :",req.user.username)
+    print("board views index req.user.username == None :",req.user.username == None) # False
+    print("board views index req.user.username == "" :",req.user.username == "") # True
+
+    context = {
+        "boardobj" : boardobj,
+        "userops" : userops
+    }
+    return render(req, "board/userdetail.html", context)
+    
+
+
+
+
 def down(req): #media board pic
     print("board views down entered")
     downtarget = req.GET.get("downtarget","/media/no.jpg")

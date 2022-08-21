@@ -27,15 +27,21 @@
                 <td class="text-center align-middle btd">{{ i.comment|truncatewords:5 }}</td>
                 <td class="text-center align-middle btd">{{ i.hits }}</td>
                 <td class="align-middle btd">
-                    {% for j in subops%}
-                        {% if i.writerops.username == j.mainuser.username %}
-                        <div style="background-color: yellow;">
-                            <img src="/media/{{ i.writerops.photo }}" width="100px">
-                        </div>
+                    <a href="{% url 'board:userdetail' i.id %}">
+                        {% if user.is_authenticated %}
+                            {% for j in subops%}
+                                {% if i.writerops.username == j.mainuser.username %}
+                                <div style="background-color: yellow;">
+                                    <img src="/media/{{ i.writerops.photo }}" width="100px">
+                                </div>
+                                {% else %}
+                                <img src="/media/{{ i.writerops.photo }}" width="100px">
+                                {% endif %}
+                            {% endfor %}
                         {% else %}
-                        <img src="/media/{{ i.writerops.photo }}" width="100px">
+                            <img src="/media/{{ i.writerops.photo }}" width="100px">
                         {% endif %}
-                    {% endfor %}
+                    </a>
                 </td>
             </tr>
         {% elif i.public == False and user.username == i.writerops.username %}

@@ -8,6 +8,7 @@ urlpatterns = [
     path('create/',views.create,name="create"),
     path('down/',views.down,name="down"),
     path('detail/<tr>',views.detail,name="detail"),
+    path('userdetail/<tr>',views.userdetail,name="userdetail"),
     path('mod/<tr>',views.mod,name="mod"),
     path('imgdel/<imgid>/<boardtr>',views.imgdel,name="imgdel"),
     path('delete/<tr>',views.delete,name="delete"),
