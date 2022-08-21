@@ -1,9 +1,10 @@
+from ast import Pass, Sub
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from .models import Board, File
 from .models import Reply
 from django.utils import timezone as Timezone
-from dwm.models import User
+from dwm.models import User, Subscribe
 from PIL import Image
 from config import settings
 import os
@@ -165,9 +166,26 @@ def index(req):
     
     pagedata = Paginator(boardobj, 5)
     boardobj = pagedata.get_page(page)
-    context = {
-        "boardobj" : boardobj
-    }
+    print()
+    #if req.user.username 
+    print("board views index req.user :",req.user)
+    print("board views index req.user.username :",req.user.username)
+    print("board views index req.user.username == None :",req.user.username == None) # False
+    print("board views index req.user.username == "" :",req.user.username == "") # True
+    if not req.user.username == "" :
+        userops = User.objects.get(username=req.user.username)
+        subops = Subscribe.objects.filter(subscriber=userops)
+        print("board views index subops :",subops)
+        print("board views index type(subops) :",type(subops))
+        print("board views index len(subops) :",len(subops))
+        context = {
+            "boardobj" : boardobj,
+            "subops" : subops
+        }
+    else :
+        context = {
+            "boardobj" : boardobj,
+        }
     return render(req, "board/index.html", context)
 
 

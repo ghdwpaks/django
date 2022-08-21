@@ -20,3 +20,14 @@ class User(AbstractUser) :
             return self.photo.url
         return "/media/no.jpg"
 
+
+
+class Subscribe(models.Model) :
+    id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
+    mainuser = models.ForeignKey(User, related_name="mainuser",on_delete=models.CASCADE,null=True)
+    subscriber = models.ForeignKey(User, related_name="follower",on_delete=models.DO_NOTHING,null=True)
+    
+    
+
+    def __str__(self):
+        return str(self.mainuser)+" / "+str(self.subscriber)
