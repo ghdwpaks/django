@@ -1,7 +1,7 @@
 from ast import Break, Pass, Sub
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-from .models import Board, File
+from .models import Board, File,Likey
 from .models import Reply
 from django.utils import timezone as Timezone
 from dwm.models import User, Subscribe
@@ -178,16 +178,22 @@ def index(req):
         print("board views index subops :",subops)
         print("board views index type(subops) :",type(subops))
         print("board views index len(subops) :",len(subops))
+        likeies = Likey.objects.filter(mainuser=userops)
+        print("board views index likeies :",likeies)
+        print("board views index type(likeies) :",type(likeies))
+        print("board views index len(likeies) :",len(likeies))
         context = {
             "showsubs" : True,
             "boardobj" : boardobj,
-            "subops" : subops
+            "subops" : subops,
+            "likeies" : likeies
         }
     else :
         context = {
             "showsubs" : False,
             "boardobj" : boardobj
         }
+    
     return render(req, "board/index.html", context)
 
 

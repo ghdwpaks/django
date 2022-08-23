@@ -19,8 +19,6 @@ class Reply(models.Model) :
         return str(self.id)+":"+str(self.comment_id)+":"+str(self.reply_writerops.username)+":"+str(self.reply_comment)
         
 class Board(models.Model) :
-    
-    
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     writerops =  models.ForeignKey(User, related_name="board", on_delete=models.CASCADE, db_column="writerops")
     credate = models.DateTimeField(default=datetime.now())
@@ -91,3 +89,10 @@ class File(models.Model) :
     def __str__(self):
         return str(self.boardops.name)+" "+str(self.id)
     
+
+class Likey(models.Model) :
+    id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
+    mainuser = models.ForeignKey(User, related_name="likey",on_delete=models.DO_NOTHING, null=True)
+    likeyboard = models.ForeignKey(Board, related_name="likeyboard",on_delete=models.CASCADE, null=True)
+    def __str__(self):
+        return str(self.mainuser)+" / "+str(self.likeyboard)

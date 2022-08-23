@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import datetime
+
 # Create your models here.
 class User(AbstractUser) :
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
@@ -31,3 +32,7 @@ class Subscribe(models.Model) :
 
     def __str__(self):
         return str(self.mainuser)+" / "+str(self.subscriber)
+
+
+
+

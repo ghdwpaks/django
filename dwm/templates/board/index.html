@@ -23,7 +23,13 @@
             <tr>
                 <td class="text-center align-middle btd">{{ i.id }}</td> 
                 <td class="text-center align-middle btd"><a href="{% url 'board:detail' i.id %}"><img src="{{ i.getthum }}" height="150px"></a></td>
-                <td class="text-center align-middle btd">{{ i.name|truncatewords:8 }}</td>
+                <td class="text-center align-middle btd" 
+                {% for j in likeies%}
+                    {% if j.likeyboard.id == i.id  %}
+                        style="background-color: yellow;"
+                    {% endif %}
+                {% endfor %}
+                >{{ i.name|truncatewords:8 }}</td>
                 <td class="text-center align-middle btd">{{ i.comment|truncatewords:5 }}</td>
                 <td class="text-center align-middle btd">{{ i.hits }}</td>
                 <td class="align-middle btd">
