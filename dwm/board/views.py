@@ -1,4 +1,4 @@
-from ast import Pass, Sub
+from ast import Break, Pass, Sub
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from .models import Board, File
@@ -172,19 +172,21 @@ def index(req):
     print("board views index req.user.username :",req.user.username)
     print("board views index req.user.username == None :",req.user.username == None) # False
     print("board views index req.user.username == "" :",req.user.username == "") # True
-    if not req.user.username == "" :
+    if not req.user.username == "" and len(Subscribe.objects.filter(subscriber=User.objects.get(username=req.user.username)))>0:
         userops = User.objects.get(username=req.user.username)
         subops = Subscribe.objects.filter(subscriber=userops)
         print("board views index subops :",subops)
         print("board views index type(subops) :",type(subops))
         print("board views index len(subops) :",len(subops))
         context = {
+            "showsubs" : True,
             "boardobj" : boardobj,
             "subops" : subops
         }
     else :
         context = {
-            "boardobj" : boardobj,
+            "showsubs" : False,
+            "boardobj" : boardobj
         }
     return render(req, "board/index.html", context)
 
@@ -404,7 +406,7 @@ def userdetail(req, tr) :
 
     
     boardobj = Board.objects.get(id=tr)
-    userops = User.objects.get(username=boardobj.writerops.username)
+    userops = User.objects.get(username=boardobj.writerops.username) #writer, detail target user, not me
     boardobj = Board.objects.filter(writerops=userops)
     if orber == "ud":
         boardobj = boardobj.order_by('credate')
@@ -416,21 +418,111 @@ def userdetail(req, tr) :
         boardobj = boardobj.order_by('-id')
     pagedata = Paginator(boardobj, 5)
     boardobj = pagedata.get_page(page)
-    print()
     #if req.user.username 
-    print("board views index req.user :",req.user)
-    print("board views index req.user.username :",req.user.username)
-    print("board views index req.user.username == None :",req.user.username == None) # False
-    print("board views index req.user.username == "" :",req.user.username == "") # True
+    print("board views userdetail userops :",userops)
+    print("board views userdetail req.user :",req.user)
+    print("board views userdetail req.user.username :",req.user.username)
+    print("board views userdetail req.user.username == None :",req.user.username == None) # False
+    print("board views userdetail req.user.username == "" :",req.user.username == "") # True
 
+    subscribing = False
+    try :
+        myops = User.objects.get(username=req.user.username)
+        substargetuser = Subscribe.objects.filter(subscriber=myops) #내가 구독한 사람들 목록
+        print("board views userdetail len(substargetuser) :",len(substargetuser))
+        for i in substargetuser :
+            if i.mainuser == userops :
+                subscribing = True
+                break
+                
+        print("board views userdetail subscribing :",subscribing)
+    except :
+        pass
     context = {
+        "subscribing" : subscribing,
         "boardobj" : boardobj,
         "userops" : userops
     }
     return render(req, "board/userdetail.html", context)
     
+def sub(req, userid) :
+    print("board views sub ")
+    subscribing = False
+    if req.user.username == "" :
+        return redirect("board:index")
+    else :
+        userops = User.objects.get(id=userid) #writer, detail target user, not me
+        print("board views sub useropsv:",userops)
+        myops = User.objects.get(username=req.user.username)
+        print("board views sub myopsv:",myops)
+        try : 
+            subable = Subscribe.objects.get(mainuser=userops,subscriber=myops)
+            print("board views sub else subable :",subable)
+            print("board views sub else type(subable) :",type(subable))
+            #unabled subscribe
+            subscribing = True
+        except :
+            #able subscribe
+            print("errored from board views sub if try received except")
+            s = Subscribe()
+            s.mainuser = userops
+            s.subscriber = myops
+            s.save()
+            subscribing = True
+
+    boardobj = Board.objects.filter(writerops=userops)
+    boardobj = boardobj.order_by('-id')
+    pagedata = Paginator(boardobj, 5)
+    boardobj = pagedata.get_page(req.GET.get("page",1))
+    context = {
+        "subscribing" : subscribing,
+        "boardobj" : boardobj,
+        "userops" : userops
+    }
+    return render(req, "board/userdetail.html", context)
 
 
+        
+        
+def unsub(req, userid) :
+    print("board views sub ")
+    subscribing = False
+    if req.user.username == "" :
+        return redirect("board:index")
+    else :
+        userops = User.objects.get(id=userid) #writer, detail target user, not me
+        print("board views sub useropsv:",userops)
+        myops = User.objects.get(username=req.user.username)
+        print("board views sub myopsv:",myops)
+        try : 
+            subable = Subscribe.objects.get(mainuser=userops,subscriber=myops)
+            print("board views sub else subable :",subable)
+            print("board views sub else type(subable) :",type(subable))
+            #abled unsubscribe
+            subable.delete()
+            subscribing = False
+        except :
+            #unable unsubscribe
+            print("errored from board views sub if try received except")
+            subscribing = False
+    
+    boardobj = Board.objects.filter(writerops=userops)
+    boardobj = boardobj.order_by('-id')
+    pagedata = Paginator(boardobj, 5)
+    boardobj = pagedata.get_page(req.GET.get("page",1))
+    context = {
+        "subscribing" : subscribing,
+        "boardobj" : boardobj,
+        "userops" : userops
+    }
+    return render(req, "board/userdetail.html", context)
+
+
+    userdetail(req,userid)
+        
+
+
+    
 
 
 def down(req): #media board pic

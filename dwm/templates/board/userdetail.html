@@ -11,14 +11,23 @@
 <br>
 <table>
     <tr>
-        <th style="padding: 30px;">USER NICK NAME : {{userops.nickname}}</th>
-        <td rowspan="3"><img src="/media/{{ userops.photo }}" width="400px"></td>
+        <th style="padding: 30px; width: 30%;">USER NICK NAME : {{userops.nickname}}</th>
+        <td rowspan="2"><img src="/media/{{ userops.photo }}" width="400px"></td>
     </tr>
     <tr>
         <th style="padding: 30px;">USER EMAIL : {{userops.email}}</th>
     </tr>
     <tr>
         <th style="padding: 30px; padding-bottom: 80px ;">USER COMMENT : {{userops.comment}}</th>
+        {% if not user.is_authenticated %}
+        <td><input class="btn btn-danger btn-lg" type="button" value="login for Subscribing" style="width: 250px;" onclick="gologin()"></td>
+        {% else %}
+            {% if subscribing %}
+                <td><input class="btn btn-secondary btn-lg" type="button" value="Unsubscribe" style="width: 150px;" onclick="gounsub({{userops.id}})"></td>
+            {% else %}
+                <td><input class="btn btn-danger btn-lg" type="button" value="Subscribe" style="width: 150px;" onclick="gosub({{userops.id}})"></td>
+            {% endif %}
+        {% endif %}
     </tr>
 </table>
 <table class="table" border="0" style="width: 80%;">
@@ -83,6 +92,20 @@
 {% endif %}
 </div>
 <div style="height: 60%;"></div>
+<script>
+    function gounsub(rowtarget) {
+        location.href='/board/unsub/'+rowtarget
+    }
+    function gosub(rowtarget) {
+        location.href='/board/sub/'+rowtarget
+    }
+    function goimgdel(imgid,boardid) {
+        location.href='/board/imgdel/'+imgid+'/'+boardid
+    }
+    function gologin() {
+        location.href='/login/'
+    }
+</script>
 <style>
     h1 {
         padding: 10px;

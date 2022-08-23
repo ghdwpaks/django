@@ -28,7 +28,7 @@
                 <td class="text-center align-middle btd">{{ i.hits }}</td>
                 <td class="align-middle btd">
                     <a href="{% url 'board:userdetail' i.id %}">
-                        {% if user.is_authenticated %}
+                        {% if showsubs %}
                             {% for j in subops%}
                                 {% if i.writerops.username == j.mainuser.username %}
                                 <div style="background-color: yellow;">
