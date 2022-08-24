@@ -322,6 +322,7 @@ def replydel(req, replytr,boardtr):
             # print("board views mod req.user.username :",req.user.username)
             if r.reply_writerops.username == req.user.username : r.delete()
             return redirect("/board/detail/"+boardtr)
+
 def imgdel(req,imgid,boardtr) :
     if req.method == "GET":
         
@@ -378,23 +379,39 @@ def detail(req, tr) :
     # print("board views detail type(boardobj.writerops.username) :",type(boardobj.writerops.username))
     # print("board views detail req.user.username :",req.user.username)
     # print("board views detail type(req.user.username) :",type(req.user.username))
+    
+    ablelikey = ""
     if boardobj.public == True :
         # print("board views detail if")
         pass
     elif boardobj.public == False and str(boardobj.writerops.username) == req.user.username:
         # print("board views detail elif 1")
         pass
-    else :
+    else : 
         # print("board views detail else")
         return redirect("board:index")
-        
+    print("board views detail 1")
     replyobj = Reply.objects.filter(comment_id=tr)
+    print("board views detail 2")
     replyobj = replyobj.order_by('-id')
+    print("board views detail 3")
     #print("board views detail ReplyObj 2:",replyobj)
+    if not req.user.username == "" :
+        myops = User.objects.get(username=req.user.username)
+        print("board views detail 4")
+        l = Likey.objects.filter(mainuser=myops,likeyboard=boardobj)
+        print("board views detail 5")
+        if len(l) <= 0 : 
+            #when the user of can being here, able show likey button
+            ablelikey="T" # True
+        else :
+            ablelikey="F" # False
+
     context = {
         "boardobj" : boardobj,
         "replyobj" : replyobj,
-        "files": files
+        "files": files,
+        "ablelikey":ablelikey
     }
     #print("board views detail tried t")
     return render(req, "board/detail.html",context)
@@ -444,13 +461,64 @@ def userdetail(req, tr) :
         print("board views userdetail subscribing :",subscribing)
     except :
         pass
+    
     context = {
         "subscribing" : subscribing,
         "boardobj" : boardobj,
         "userops" : userops
     }
     return render(req, "board/userdetail.html", context)
-    
+
+
+def likey(req, likeytarget) :
+    print("board views likey ")
+    if req.user.username == "" :
+        return redirect("board:index")
+    else :
+        b = Board.objects.get(id=likeytarget) 
+        print("board views likey b:",b)
+        myops = User.objects.get(username=req.user.username)
+        print("board views likey myopsv:",myops)
+        try : 
+            l = Likey.objects.get(mainuser=b,likeyboard=myops)
+            print("board views likey else l :",l)
+            print("board views likey else type(l) :",type(l))
+            #unabled likey
+        except :
+            #able likey
+            print("errored from board views likey if try received except")
+            l = Likey()
+            l.mainuser = myops
+            l.likeyboard = b
+            l.save()
+    print("board views t1")
+    return detail(req, likeytarget)
+    #print("board views t2")
+
+
+def unlikey(req, unlikeytarget) :
+    print("board views likey ")
+    if req.user.username == "" :
+        return redirect("board:index")
+    else :
+        b = Board.objects.get(id=unlikeytarget) 
+        print("board views likey b:",b)
+        myops = User.objects.get(username=req.user.username)
+        print("board views likey myopsv:",myops)
+        try : 
+            l = Likey.objects.filter(mainuser=myops,likeyboard=b)
+            print("board views likey else l :",l)
+            print("board views likey else type(l) :",type(l))
+            l.delete()
+            #able unlikey
+        except :
+            #unable unlikey
+            print("errored from board views unlikey if try received except")
+    print("board views t1")
+    return detail(req, unlikeytarget)
+    #print("board views t2")
+        
+
 def sub(req, userid) :
     print("board views sub ")
     subscribing = False
