@@ -1,4 +1,134 @@
 {% extends 'header.html' %}
 {% block con %}
-<h1>Hello index in dwm</h1>
+{% load mathfilters %}
+
+<div  align="left" style=" margin-left: 1%;">
+<h1>Hello index</h1>
+
+
+<br>
+{% if showtbl %}
+<table>
+    <tr>
+        <td style="margin: 0px; padding: 0px; width: 60%;">
+            <table class="table table-dark" border="0" style="width: 100%;">
+                <tr>
+                    <th class="text-center align-middle btd" style="width: 5%;">NO</th>
+                    <th class="text-center align-middle btd" style="width: 25%;">THUMNAIL</th>
+                    <th class="text-center align-middle btd" style="width: 15%;">SUBJECT</th>
+                    <th class="text-center align-middle btd" style="width: 15%;">SUMMARY</th>
+                    <th class="text-center align-middle btd" style="width: 10%;">HITS</th>
+                    <th class="text-center align-middle btd" style="width: 30%;" colspan="2">WRITER</th>
+                </tr>   
+                
+                {% for i in boardobj %}
+                    {% if i.public == True %}
+                        <tr>
+                            <td class="text-center align-middle btd" style="width: 10%;">{{ i.id }}</td> 
+                            <td class="text-center align-middle btd" style="width: 30%;"><a href="{% url 'board:detail' i.id %}"><img src="{{ i.getthum }}" height="150px"></a></td>
+                            <td class="text-center align-middle btd" 
+                            {% for j in likeies%}
+                                {% if j.likeyboard.id == i.id  %}
+                                    style="background-color: royalblue;"
+                                {% endif %}
+                            {% endfor %}
+                            style="width: 20%;">{{ i.name|truncatewords:8 }}</td>
+                            <td class="text-center align-middle btd" style="width: 15%;">{{ i.comment|truncatewords:5 }}</td>
+                            <td class="text-center align-middle btd" style="width: 5%;">{{ i.hits }}</td>
+                            <td class="align-middle btd" style="width: 20%;">
+                                <a href="{% url 'board:userdetail' i.id %}">
+                                    {% if showsubs %}
+                                        {% for j in subops%}
+                                            {% if i.writerops.username == j.mainuser.username %}
+                                            <div style="background-color: royalblue;">
+                                                <img src="/media/{{ i.writerops.photo }}" width="100px">
+                                            </div>
+                                            {% else %}
+                                            <img src="/media/{{ i.writerops.photo }}" width="100px">
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        <img src="/media/{{ i.writerops.photo }}" width="100px">
+                                    {% endif %}
+                                </a>
+                            </td>
+                        </tr>
+                    {% elif i.public == False and user.username == i.writerops.username %}
+                        <tr>
+                            <td class="text-center align-middle btd">{{ i.id }}</td> 
+                            <td class="text-center align-middle btd"><a href="{% url 'board:detail' i.id %}"><img src="{{ i.getthum }}" height="150px"></a></td>
+                            <td class="text-center align-middle btd">{{ i.name|truncatewords:8 }}</td>
+                            <td class="text-center align-middle btd">{{ i.comment|truncatewords:5 }}</td>
+                            <td class="text-center align-middle btd">{{ i.hits }}</td>
+                            <td class="align-middle btd"><img src="/media/{{ i.writerops.photo }}" width="100px"></td>
+                        </tr>
+                    {% endif %}
+                
+                {% empty %}
+                    <tr>
+                    {% if kw %}
+                            <td colspan="5">검색결과가 없습니다</td>
+                    {% else %}
+                            <td colspan="5">첫번째 게시글을 작성해주세요</td>
+                    {% endif %} 
+                    </tr>
+                {% endfor %}
+            </table>
+            {% if boardobj.has_previous %}
+                <a href="{% url 'board:index' %}?page=1&kw={{kw}}&cate={{cate}}"><button class="btn btn-light" >처음</button></a>
+                <a href="{% url 'board:index' %}?page={{ boardobj.previous_page_number }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light" >이전</button></a>
+            {% else %}
+                <button class="btn btn-light"  disabled>처음</button>
+                <button class="btn btn-light" disabled>이전</button>
+            {% endif %}
+            {% for i in boardobj.paginator.page_range %}
+                {% if i >= boardobj.number|sub:5 and boardobj.number|add:4 >= i %}
+                    <a href="{% url 'board:index' %}?page={{i}}&kw={{kw}}&cate={{cate}}">
+                        <button {% if i == boardobj.number %} disabled {% endif %} class="btn btn-light">{{ i }}</button>
+                    </a>
+                {% endif %}
+            {% endfor %}
+            
+            {% if boardobj.has_next %}
+                <a href="{% url 'board:index' %}?page={{ boardobj.next_page_number }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light">다음</button></a>
+                <a href="{% url 'board:index' %}?page={{ boardobj.paginator.num_pages }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light">마지막</button></a>
+            {% else %}
+                <button class="btn btn-light" disabled>다음</button>
+                <button class="btn btn-light" disabled>마지막</button>
+            {% endif %}
+        </td>
+        <td>
+            <table class="table table-striped" style="padding: 1%; margin: 1%;">
+                {% for j in subops%}
+                    <div style="background-color: royalblue;">
+                        <tr>
+                            <td style="width: 500px;">
+                                <h3>{{j.mainuser.username}}</h3>
+                                <br>
+                                <h5>{{j.mainuser.comment|truncatewords:8}}</h5>
+                            </td>
+                            <td><img src="/media/{{ j.mainuser.photo }}" height="150px"></td>
+                        </tr>
+                    </div>
+                {% endfor %}
+            </table>
+        </td>
+    </tr>
+</table>
+</div>
+{% endif %}
+<div style="height: 60%;"></div>
+<style>
+    h1 {
+        padding: 10px;
+    }
+    button{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .btd {
+        text-align: left;
+        padding: 10px;
+    }
+</style>
 {% endblock %}

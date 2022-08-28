@@ -1,7 +1,7 @@
 from ast import Break, Pass, Sub
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-from .models import Board, File,Likey
+from .models import Board, File,Likey,Reply
 from .models import Reply
 from django.utils import timezone as Timezone
 from dwm.models import User, Subscribe
