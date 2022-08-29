@@ -74,6 +74,7 @@ def index(req):
                     print("dwm views index if if if for bi :",len(bi))
                     result_subops = result_subops.union(bi, all=True)
                     print("dwm views index if if if for result_subops :",result_subops)
+                    print("dwm views index if if if for type(result_subops) :",type(result_subops))
                     print("dwm views index if if if for len(result_subops) :",len(result_subops))
 
                     
@@ -85,15 +86,28 @@ def index(req):
                     li = Board.objects.filter(id=i.likeyboard.id)
                     print("dwm views index if if if for li :",li)
                     print("dwm views index if if if for li :",len(li))
-                    result_subops = result_subops.union(li,all=True)
+                    result_subops = result_subops.union(li)
                 #result_subops = result_subops.union(likeies,all=True)
                 
                 result_subops = result_subops.order_by('-id')
+
+                sublist = []
+                for i in result_subops :
+                    for j in subops :
+                        if j.mainuser == i.writerops :
+                            print("dwm views index if if for for if j :",j)
+                            sublist.append(i.writerops.username)
+                            break
+                for i in range(len(sublist)) :
+                    print("dwm views index if if if for sublist[i]:",sublist[i])
+                sublist = set(sublist)
+                sublist = list(sublist)
                 context = {
                     "showtbl" : True,      
                     "showsubs" : True,
                     "boardobj" : result_subops,
                     "subops" : subops,
+                    "sublist" : sublist,
                     "likeies" : likeies
                 }
         else :
