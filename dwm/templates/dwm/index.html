@@ -39,7 +39,7 @@
                                 <a href="{% url 'board:userdetail' i.id %}">
                                     {% if showsubs %}
                                         {% if i.writerops.username in sublist%}
-                                        <div style="background-color: royalblue;">
+                                        <div style="background-color: royalblue; padding: 5px;">
                                             <img src="/media/{{ i.writerops.photo }}" width="100px">
                                         </div>
                                         {% else %}
@@ -73,28 +73,28 @@
                 {% endfor %}
             </table>
             {% if boardobj.has_previous %}
-                <a href="{% url 'board:index' %}?page=1&kw={{kw}}&cate={{cate}}"><button class="btn btn-light" >처음</button></a>
-                <a href="{% url 'board:index' %}?page={{ boardobj.previous_page_number }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light" >이전</button></a>
+                <a href="{% url 'dwm:index' %}?page=1&kw={{kw}}&cate={{cate}}"><button class="btn btn-light" >처음</button></a>
+                <a href="{% url 'dwm:index' %}?page={{ boardobj.previous_page_number }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light" >이전</button></a>
             {% else %}
                 <button class="btn btn-light"  disabled>처음</button>
                 <button class="btn btn-light" disabled>이전</button>
             {% endif %}
             {% for i in boardobj.paginator.page_range %}
                 {% if i >= boardobj.number|sub:5 and boardobj.number|add:4 >= i %}
-                    <a href="{% url 'board:index' %}?page={{i}}&kw={{kw}}&cate={{cate}}">
+                    <a href="{% url 'dwm:index' %}?page={{i}}&kw={{kw}}&cate={{cate}}">
                         <button {% if i == boardobj.number %} disabled {% endif %} class="btn btn-light">{{ i }}</button>
                     </a>
                 {% endif %}
             {% endfor %}
             
             {% if boardobj.has_next %}
-                <a href="{% url 'board:index' %}?page={{ boardobj.next_page_number }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light">다음</button></a>
-                <a href="{% url 'board:index' %}?page={{ boardobj.paginator.num_pages }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light">마지막</button></a>
+                <a href="{% url 'dwm:index' %}?page={{ boardobj.next_page_number }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light">다음</button></a>
+                <a href="{% url 'dwm:index' %}?page={{ boardobj.paginator.num_pages }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light">마지막</button></a>
             {% else %}
                 <button class="btn btn-light" disabled>다음</button>
                 <button class="btn btn-light" disabled>마지막</button>
             {% endif %}
-        </td>
+        </td>   
         <td>
             <table class="table table-striped" style="padding: 1%; margin: 1%;">
                 {% for j in subops%}

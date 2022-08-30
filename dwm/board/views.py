@@ -182,10 +182,23 @@ def index(req):
         print("board views index likeies :",likeies)
         print("board views index type(likeies) :",type(likeies))
         print("board views index len(likeies) :",len(likeies))
+        
+        sublist = []
+        for i in boardobj :
+            for j in subops :
+                if j.mainuser == i.writerops :
+                    print("dwm views index if if for for if j :",j)
+                    sublist.append(i.writerops.username)
+                    break
+        for i in range(len(sublist)) :
+            print("dwm views index if if if for sublist[i]:",sublist[i])
+        sublist = set(sublist)
+        sublist = list(sublist)
         context = {
             "showsubs" : True,
             "boardobj" : boardobj,
             "subops" : subops,
+            "sublist" : sublist,
             "likeies" : likeies
         }
     else :

@@ -35,15 +35,13 @@
                 <td class="align-middle btd">
                     <a href="{% url 'board:userdetail' i.id %}">
                         {% if showsubs %}
-                            {% for j in subops%}
-                                {% if i.writerops.username == j.mainuser.username %}
+                            {% if i.writerops.username in sublist%}
                                 <div style="background-color: yellow;">
                                     <img src="/media/{{ i.writerops.photo }}" width="100px">
                                 </div>
-                                {% else %}
+                            {% else %}
                                 <img src="/media/{{ i.writerops.photo }}" width="100px">
-                                {% endif %}
-                            {% endfor %}
+                            {% endif %}
                         {% else %}
                             <img src="/media/{{ i.writerops.photo }}" width="100px">
                         {% endif %}

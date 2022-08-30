@@ -90,6 +90,8 @@ def index(req):
                 #result_subops = result_subops.union(likeies,all=True)
                 
                 result_subops = result_subops.order_by('-id')
+                pagedata = Paginator(result_subops, 5)
+                result_subops = pagedata.get_page(page)
 
                 sublist = []
                 for i in result_subops :
