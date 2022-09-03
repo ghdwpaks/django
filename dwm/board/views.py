@@ -111,14 +111,6 @@ def create(req):
 def index(req):
     global User
     page = req.GET.get("page",1)
-    if req.method == "POST":
-        print("board views index if POST")
-        keyword = req.POST.get("keyword","")
-        searchword = req.POST.get("searchword","")
-        order = req.POST.get("order","desid")
-        print("board views index if 'POST' searchword :",searchword)
-        print("board views index if 'POST' keyword :",keyword)
-        print("board views index if 'POST' order :",order)
     if req.method == "GET":
         print("board views index if GET")
         keyword = req.GET.get("keyword","")
@@ -197,17 +189,30 @@ def index(req):
             print("dwm views index if if if for sublist[i]:",sublist[i])
         sublist = set(sublist)
         sublist = list(sublist)
+        
+        print("dwm views index if if if keyword",keyword)
+        print("dwm views index if if if searchword",searchword)
+        print("dwm views index if if if order",order)
         context = {
             "showsubs" : True,
             "boardobj" : boardobj,
             "subops" : subops,
             "sublist" : sublist,
-            "likeies" : likeies
+            "likeies" : likeies,
+            "keyword" : keyword,
+            "searchword" : searchword,
+            "order" : order
         }
     else :
+        print("dwm views index if else keyword",keyword)
+        print("dwm views index if else searchword",searchword)
+        print("dwm views index if else order",order)
         context = {
             "showsubs" : False,
-            "boardobj" : boardobj
+            "boardobj" : boardobj,
+            "keyword" : keyword,
+            "searchword" : searchword,
+            "order" : order
         }
     
     return render(req, "board/index.html", context)
