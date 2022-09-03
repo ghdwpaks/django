@@ -1,4 +1,3 @@
-from ast import Break, Pass, Sub
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from .models import Board, File,Likey,Reply
@@ -112,57 +111,61 @@ def create(req):
 def index(req):
     global User
     page = req.GET.get("page",1)
-    categoryname = req.GET.get("category" ,"")
-    keywordname = req.GET.get("keyword","")
-    orber = req.GET.get("order","di")
+    if req.method == "POST":
+        print("board views index if POST")
+        keyword = req.POST.get("keyword","")
+        searchword = req.POST.get("searchword","")
+        order = req.POST.get("order","desid")
+        print("board views index if 'POST' searchword :",searchword)
+        print("board views index if 'POST' keyword :",keyword)
+        print("board views index if 'POST' order :",order)
+    if req.method == "GET":
+        print("board views index if GET")
+        keyword = req.GET.get("keyword","")
+        searchword = req.GET.get("searchword","")
+        order = req.GET.get("order","desid")
+        print("board views index if 'GET' searchword :",searchword)
+        print("board views index if 'GET' keyword :",keyword)
+        print("board views index if 'GET' order :",order)
 
-    #page : 페이지네이터가 나눈 페이지의 순번 : The order of the pages divided by 'Paginator'
-
-    #categoryname : 카테고리를 이용한 검색을 했을때, 이 단어 또는 문장 : When you search using categories, this word or sentence
-    #sub : subject : Search by Name : 작성된 객체의 이름(제목)으로 검색합니다.
-    #wri : writer nick name : Search by Writer Nick Name : 작성자의 별명으로 검색합니다.
-    #com : comment : Search by Comment : 작성된 내용물의 코멘트 내용의 포함된 객체들을 검색합니다.
-
-    #keywordname : 카테고리를 이용한 검색을 했을때, 이 단어 또는 문장 : When you search using categories, this word or sentence
-
-    #Order : 일련번호(아이디)나 생성순서 등의 기준을 둔 내림차순과 오름차순의 구분 데이터 : Separated data in descending and ascending order based on serial number (ID) or generation order
-    #ud : upper date : 생성일자 기준 오름차순 : Ascending order based on creation date
-    #dd : downer date : 생성일자 기준 내림차순 : In descending order based on generation date
-    #ui : upper id : 아이디 기준 오름차순 : Ascending by ID
-    #di : downer id : 아이디 기준 내림차순 : Based on ID, descending order
-
-    #boardobj : board 앱에서 만들어진 models의 Board 클래스에 기반을 둔 다목적 객체. : A multipurpose object based on the Board class of models created in the board app.
-
-    #writers : 출력해야하는 (한 페이지) 목록의 모든 작성자들의 정보 : Information for all authors of the (one page) list that needs to be printed
-    #writersname : 출력해야하는 (한 페이지) 목록의 모든 작성자들의 이름(WriterNickName) : Name (WriterNickName) of all authors of the (one page) list that needs to be printed
-    #writerphotos : 출력해야하는 (한 페이지) 목록의 모든 작성자들의 프로필 사진의 주소 : The address of the profile picture of all authors in the (one page) list that needs to be printed
-
-    #pagedata : 출력할 수 있을 가능성이 있는 모든 객체들의 모음 : A collection of all objects that are likely to be output
-    #boardobj : 한 페이지에 반드시 출력해야할 객체들의 모음 : A collection of objects that must be printed on a page
-
-    if keywordname:
-        if categoryname == "sub":
-            boardobj = Board.objects.filter(subject__startswith=keywordname)
-        elif categoryname == "wri":
-            try:
-                u = User.objects.get(username=keywordname)
-                boardobj = Board.objects.filter(writername=u)
-            except:
-                boardobj = Board.objects.none()
-        elif categoryname == "com":
-            boardobj = Board.objects.filter(comment__contains=keywordname)
-    else:
+    if str(keyword) == "" :
+        print("board views index if ''searchword")
         boardobj = Board.objects.all()
+    else : 
+        if str(keyword) == "subject":
+            print("board views index if else subject")
+            boardobj = Board.objects.filter(name=str(searchword))
+        elif str(keyword) == "content":
+            print("board views index if else content")
+            boardobj = Board.objects.filter(comment=str(searchword))
+        elif str(keyword) == "writername":
+            print("board views index if else writername")
+            writerops = User.objects.filter(nickname=str(searchword))
+            boardobj = Board.objects.filter(writerops=writerops)
+        else : 
+            print("board views index if else else")
+            boardobj = Board.objects.none()
 
-    if orber == "ud":
-        boardobj = boardobj.order_by('credate')
-    elif orber == "dd" :
-        boardobj = boardobj.order_by('-credate')
-    if orber == "ui":
-        boardobj = boardobj.order_by('id')
-    elif orber == "di" :
-        boardobj = boardobj.order_by('-id')
-    
+
+    print("board views index boardobj :",boardobj)
+    print("board views index len(boardobj) :",len(boardobj))
+
+
+
+    if not order == "" :
+        if order == "ascdate":
+            print("board views index if if ascdate")
+            boardobj = boardobj.order_by('credate')
+        elif order == "desdate" :
+            print("board views index if if desdate")
+            boardobj = boardobj.order_by('-credate')
+        if order == "ascid":
+            print("board views index if if ascid")
+            boardobj = boardobj.order_by('id')
+        elif order == "desid" :
+            print("board views index if if desid")
+            boardobj = boardobj.order_by('-id')
+        
     
     pagedata = Paginator(boardobj, 5)
     boardobj = pagedata.get_page(page)

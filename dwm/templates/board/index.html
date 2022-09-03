@@ -1,14 +1,42 @@
 {% extends 'header.html' %}
 {% block con %}
 {% load mathfilters %}
+    
 <div  align="left" style=" margin-left: 1%;">
 
 {% if user.is_authenticated %}
 <div style="width: 30%; margin-left: 1%;"><a href="{% url 'board:create' %}"><h1>CREATE CONTENT</h1></a></div>
 {% else %}
 {% endif %}
-
 <br>
+<table>
+    <tr>
+        <td colspan="2">
+            <select name="order" style="width: 90%;" id="order">
+                <option value="desdate">내림차순 ID</option>
+                <option value="ascdate">오름차순 ID</option>
+                <option value="desid">내림차순 생성일자</option>
+                <option value="ascid">오름차순 생성일자</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <select name="keyword" style="width: 75%;" id="keyword">
+                <option value="subject">제목</option>
+                <option value="content">내용</option>
+                <option value="writername">작성자</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" name="searchword" id="searchword">
+        </td>
+        <td><input type="submit" class="btn  btn-outline-primary" onclick="moving()"></td>
+
+    </tr>
+</table>
 <table class="table" border="0" style="width: 80%;">
     <tr>
         <th class="text-center align-middle btd" style="width: 5%;">NO</th>
@@ -70,23 +98,23 @@
     {% endfor %}
 </table>
 {% if boardobj.has_previous %}
-    <a href="{% url 'board:index' %}?page=1&kw={{kw}}&cate={{cate}}"><button class="btn btn-light" >처음</button></a>
-    <a href="{% url 'board:index' %}?page={{ boardobj.previous_page_number }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light" >이전</button></a>
+    <a href="{% url 'board:index' %}?page=1"><button class="btn btn-light" >처음</button></a>
+    <a href="{% url 'board:index' %}?page={{ boardobj.previous_page_number }}"><button class="btn btn-light" >이전</button></a>
 {% else %}
     <button class="btn btn-light"  disabled>처음</button>
     <button class="btn btn-light" disabled>이전</button>
 {% endif %}
 {% for i in boardobj.paginator.page_range %}
     {% if i >= boardobj.number|sub:5 and boardobj.number|add:4 >= i %}
-        <a href="{% url 'board:index' %}?page={{i}}&kw={{kw}}&cate={{cate}}">
+        <a href="{% url 'board:index' %}?page={{i}}">
             <button {% if i == boardobj.number %} disabled {% endif %} class="btn btn-light">{{ i }}</button>
         </a>
     {% endif %}
 {% endfor %}
 
 {% if boardobj.has_next %}
-    <a href="{% url 'board:index' %}?page={{ boardobj.next_page_number }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light">다음</button></a>
-    <a href="{% url 'board:index' %}?page={{ boardobj.paginator.num_pages }}&kw={{kw}}&cate={{cate}}"><button class="btn btn-light">마지막</button></a>
+    <a href="{% url 'board:index' %}?page={{ boardobj.next_page_number }}"><button class="btn btn-light">다음</button></a>
+    <a href="{% url 'board:index' %}?page={{ boardobj.paginator.num_pages }}"><button class="btn btn-light">마지막</button></a>
 {% else %}
     <button class="btn btn-light" disabled>다음</button>
     <button class="btn btn-light" disabled>마지막</button>
@@ -106,4 +134,17 @@
         padding: 10px;
     }
 </style>
+
+<script>
+    function moving() {
+        var searchword = document.getElementById('searchword');
+        var order = document.getElementById('order');
+        var keyword = document.getElementById('keyword');
+        //console.log(keyword.value)
+        //console.log(order.value)
+        //console.log(searchword.value)
+        location.href='/board/index/?searchword='+searchword.value+"&order="+order.value+"&keyword="+keyword.value
+
+    }
+</script>
 {% endblock %}
