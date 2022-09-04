@@ -131,9 +131,51 @@ def index(req):
             print("board views index if else content")
             boardobj = Board.objects.filter(comment=str(searchword))
         elif str(keyword) == "writername":
-            print("board views index if else writername")
+            print("board views index if else writername 1")
             writerops = User.objects.filter(nickname=str(searchword))
-            boardobj = Board.objects.filter(writerops=writerops)
+            print("board views index if else writername writerops :",writerops)
+            print("board views index if else writername type(writerops) :",type(writerops))
+            boardobj = Board.objects.filter(id=0)
+            for i in writerops :
+                tempunion = Board.objects.filter(writerops=i)
+                boardobj = boardobj.union(tempunion)
+        
+        elif str(keyword) == "includedsubject":
+            print("board views index if else includedsubject")
+            boardobj = Board.objects.filter(id=0)
+            print("board views index else if includedsubject boardobj :",boardobj)
+            print("board views index else if includedsubject type(boardobj) :",type(boardobj))
+            tempobj = Board.objects.all()
+            for i in tempobj :
+                if searchword in str(i.name) :
+                    print("board views index else if includedsubject for if i :",i)
+                    print("board views index else if includedsubject for if i.id :",i.id)
+                    tempunion = Board.objects.filter(id=i.id)
+                    print("board views index else if includedsubject for if tempunion :",tempunion)
+                    print("board views index else if includedsubject for if type(tempunion) :",type(tempunion))
+                    boardobj = boardobj.union(tempunion)
+        elif str(keyword) == "includedcontent":
+            print("board views index if else includedcontent")
+            boardobj = Board.objects.filter(id=0)
+            tempobj = Board.objects.all()
+            for i in tempobj :
+                if searchword in str(i.content) :
+                    tempunion = Board.objects.filter(id=i.id)
+                    boardobj = boardobj.union(tempunion)
+        elif str(keyword) == "includedwritername":
+            print("board views index if else includedwritername")
+            boardobj = Board.objects.filter(id=0)
+            userlist = User.objects.filter(id=0)
+            tempobj = User.objects.all()
+            
+            for i in tempobj :
+                if str(searchword) in str(i.nickname) :
+                    tempunion = User.objects.filter(id=i.id)
+                    userlist = userlist.union(tempunion)
+            for i in userlist :
+                userops = User.objects.get(id=i.id)
+                userwrited = Board.objects.filter(writerops=userops)
+                boardobj = boardobj.union(userwrited)
         else : 
             print("board views index if else else")
             boardobj = Board.objects.none()

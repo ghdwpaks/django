@@ -60,7 +60,7 @@ def index(req):
                 print("dwm views index if if if subops :",subops)
                 print("dwm views index if if if type(subops) :",type(subops))
                 print("dwm views index if if if len(subops) :",len(subops))
-                result_subops = Board.objects.filter(id=0)
+                result_subops = Board.objects.none()
                 print("dwm views index if if if result_subops :",result_subops)
                 
                 for i in subops :
