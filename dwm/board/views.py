@@ -111,14 +111,13 @@ def create(req):
 def index(req):
     global User
     page = req.GET.get("page",1)
-    if req.method == "GET":
-        print("board views index if GET")
-        keyword = req.GET.get("keyword","")
-        searchword = req.GET.get("searchword","")
-        order = req.GET.get("order","desid")
-        print("board views index if 'GET' searchword :",searchword)
-        print("board views index if 'GET' keyword :",keyword)
-        print("board views index if 'GET' order :",order)
+    print("board views index if GET")
+    keyword = req.GET.get("keyword","")
+    searchword = req.GET.get("searchword","")
+    order = req.GET.get("order","desid")
+    print("board views index if 'GET' searchword :",searchword)
+    print("board views index if 'GET' keyword :",keyword)
+    print("board views index if 'GET' order :",order)
 
     if str(keyword) == "" :
         print("board views index if ''searchword")
@@ -159,7 +158,7 @@ def index(req):
             boardobj = Board.objects.filter(id=0)
             tempobj = Board.objects.all()
             for i in tempobj :
-                if searchword in str(i.content) :
+                if searchword in str(i.comment) :
                     tempunion = Board.objects.filter(id=i.id)
                     boardobj = boardobj.union(tempunion)
         elif str(keyword) == "includedwritername":
@@ -469,11 +468,30 @@ def detail(req, tr) :
             ablelikey="T" # True
         else :
             ablelikey="F" # False
+    stdsubstr = "https://www.youtube.com/"
+    links = []
+    print("board views detail boardobj.comment :",boardobj.comment)
+    print("board views detail str(boardobj.comment) :",str(boardobj.comment))
+    print("board views detail str(boardobj.comment).count(stdsubstr) :",str(boardobj.comment).count(stdsubstr))
+    for i in range(str(boardobj.comment).count(stdsubstr)) :
+        #"https://www.youtube.com/"+str(str(boardobj.comment).split(stdsubstr)[i])
+        print('board views detail for boardobj.comment :',boardobj.comment)
+        print('board views detail for str(boardobj.comment) :',str(boardobj.comment))
+        print('board views detail for str(boardobj.comment).split(stdsubstr) :',str(boardobj.comment).split(stdsubstr))
+        print('board views detail for str(boardobj.comment).split(stdsubstr)[-(i+1)] :',str(boardobj.comment).split(stdsubstr)[-(i+1)])
+        print('str(boardobj.comment).split(stdsubstr)[-(i+1)].split(n) :',str(boardobj.comment).split(stdsubstr)[-(i+1)].split("\n"))
+        print('str(boardobj.comment).split(stdsubstr)[-(i+1)].split(n)[0] :',str(boardobj.comment).split(stdsubstr)[-(i+1)].split("\n")[0])
+        print('str(boardobj.comment).split(stdsubstr)[-(i+1)].split(n)[0].strip() :',str(boardobj.comment).split(stdsubstr)[-(i+1)].split("\n")[0].split(" ")[0].strip())
+        print("board views detail for appending :","https://www.youtube.com/embed/"+str(boardobj.comment).split(stdsubstr)[-(i+1)].split("\n")[0].split(" ")[0].strip())
+
+        links.append("https://www.youtube.com/embed/"+str(boardobj.comment).split(stdsubstr)[-(i+1)].split("\n")[0].split(" ")[0].strip())
+    links.reverse()
 
     context = {
         "boardobj" : boardobj,
         "replyobj" : replyobj,
         "files": files,
+        "links":links,
         "ablelikey":ablelikey
     }
     #print("board views detail tried t")

@@ -25,7 +25,16 @@
         </tr>
         <tr>
             <th>내용 :</th>
-            <td class="btd" colspan="3" rowspan="3">{{ boardobj.comment }}</td>
+            <td class="btd" colspan="3" rowspan="3">
+                {{ boardobj.comment }}
+                <br><br><br>
+                {% if links %}
+                    {% for i in links %}
+                        <h6><b>{{i}}</b></h6>
+                        <iframe height="300px" width="531px" src="{{ i }}"></iframe> <br>
+                    {% endfor %}
+                {% endif %}
+            </td>
         </tr>
         <tr></tr>
         <tr></tr>

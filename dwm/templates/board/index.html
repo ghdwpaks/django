@@ -13,10 +13,10 @@
     <tr>
         <td colspan="2">
             <select name="order" style="width: 90%;" id="order">
-                <option value="desdate"{%if order == 'desdate'%}selected{%endif%}>내림차순 ID</option>
-                <option value="ascdate"{%if order == 'ascdate'%}selected{%endif%}>오름차순 ID</option>
-                <option value="desid"{%if order == 'desid'%}selected{%endif%}>내림차순 생성일자</option>
-                <option value="ascid"{%if order == 'ascid'%}selected{%endif%}>오름차순 생성일자</option>
+                <option value="desdate"{%if order == 'desdate'%}selected{%endif%}>내림차순 생성일자</option>
+                <option value="ascdate"{%if order == 'ascdate'%}selected{%endif%}>오름차순 생성일자</option>
+                <option value="desid"{%if order == 'desid'%}selected{%endif%}>내림차순 ID</option>
+                <option value="ascid"{%if order == 'ascid'%}selected{%endif%}>오름차순 ID</option>
             </select>
         </td>
     </tr>
@@ -100,24 +100,27 @@
         </tr>
     {% endfor %}
 </table>
+<h6>keyword : {{keyword}}</h6>
+<h6>searchword : {{searchword}}</h6>
+<h6>order : {{order}}</h6>
 {% if boardobj.has_previous %}
-    <a href="{% url 'board:index' %}?page=1&keyword={{ keyword }}&searchword={{ searchword }}&order= {{ order }}"><button class="btn btn-light" >처음</button></a>
-    <a href="{% url 'board:index' %}?page={{ boardobj.previous_page_number }}&keyword={{ keyword }}&searchword={{ searchword }}&order= {{ order }}"><button class="btn btn-light" >이전</button></a>
+    <a href="{% url 'board:index' %}?page=1&keyword={{ keyword }}&searchword={{ searchword }}&order={{ order }}"><button class="btn btn-light" >처음</button></a>
+    <a href="{% url 'board:index' %}?page={{ boardobj.previous_page_number }}&keyword={{ keyword }}&searchword={{ searchword }}&order={{ order }}"><button class="btn btn-light" >이전</button></a>
 {% else %}
     <button class="btn btn-light"  disabled>처음</button>
     <button class="btn btn-light" disabled>이전</button>
 {% endif %}
 {% for i in boardobj.paginator.page_range %}
     {% if i >= boardobj.number|sub:5 and boardobj.number|add:4 >= i %}
-        <a href="{% url 'board:index' %}?page={{i}}&keyword={{ keyword }}&searchword={{ searchword }}&order= {{ order }}">
+        <a href="{% url 'board:index' %}?page={{i}}&keyword={{ keyword }}&searchword={{ searchword }}&order={{ order }}">
             <button {% if i == boardobj.number %} disabled {% endif %} class="btn btn-light">{{ i }}</button>
         </a>
     {% endif %}
 {% endfor %}
 
 {% if boardobj.has_next %}
-    <a href="{% url 'board:index' %}?page={{ boardobj.next_page_number }}&keyword={{ keyword }}&searchword={{ searchword }}&order= {{ order }}"><button class="btn btn-light">다음</button></a>
-    <a href="{% url 'board:index' %}?page={{ boardobj.paginator.num_pages }}&keyword={{ keyword }}&searchword={{ searchword }}&order= {{ order }}"><button class="btn btn-light">마지막</button></a>
+    <a href="{% url 'board:index' %}?page={{ boardobj.next_page_number }}&keyword={{ keyword }}&searchword={{ searchword }}&order={{ order }}"><button class="btn btn-light">다음</button></a>
+    <a href="{% url 'board:index' %}?page={{ boardobj.paginator.num_pages }}&keyword={{ keyword }}&searchword={{ searchword }}&order={{ order }}"><button class="btn btn-light">마지막</button></a>
 {% else %}
     <button class="btn btn-light" disabled>다음</button>
     <button class="btn btn-light" disabled>마지막</button>
