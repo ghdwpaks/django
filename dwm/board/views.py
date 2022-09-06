@@ -1,3 +1,5 @@
+
+from glob import escape
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from .models import Board, File,Likey,Reply
@@ -121,83 +123,132 @@ def index(req):
 
     if str(keyword) == "" :
         print("board views index if ''searchword")
-        boardobj = Board.objects.all()
+        boardobj = list(Board.objects.all())
     else : 
         if str(keyword) == "subject":
             print("board views index if else subject")
-            boardobj = Board.objects.filter(name=str(searchword))
+            boardobj = list(Board.objects.filter(name=str(searchword)))
         elif str(keyword) == "content":
             print("board views index if else content")
-            boardobj = Board.objects.filter(comment=str(searchword))
+            boardobj = list(Board.objects.filter(comment=str(searchword)))
         elif str(keyword) == "writername":
-            print("board views index if else writername 1")
+            boardobj = []
             writerops = User.objects.filter(nickname=str(searchword))
-            print("board views index if else writername writerops :",writerops)
-            print("board views index if else writername type(writerops) :",type(writerops))
-            boardobj = Board.objects.filter(id=0)
             for i in writerops :
-                tempunion = Board.objects.filter(writerops=i)
-                boardobj = boardobj.union(tempunion)
+                try :
+                    tempappend = Board.objects.get(writerops=i)
+                    boardobj.append(tempappend)
+                except :
+                    pass
+
+            
         
         elif str(keyword) == "includedsubject":
+            '''
+            https://code.djangoproject.com/ticket/28830
+            from django.db.models.utils import list_to_queryset
+            queryset = list_to_queryset(object_list)
+            '''
             print("board views index if else includedsubject")
-            boardobj = Board.objects.filter(id=0)
-            print("board views index else if includedsubject boardobj :",boardobj)
-            print("board views index else if includedsubject type(boardobj) :",type(boardobj))
+            
             tempobj = Board.objects.all()
+            boardobj = []
+            print("board views index elif includedsubject boardobj :",boardobj)
+            print("board views index elif includedsubject type(boardobj) :",type(boardobj))
             for i in tempobj :
                 if searchword in str(i.name) :
                     print("board views index else if includedsubject for if i :",i)
+                    print("board views index else if includedsubject for if type(i) :",type(i)) #<class 'django.db.models.query.QuerySet'>
                     print("board views index else if includedsubject for if i.id :",i.id)
-                    tempunion = Board.objects.filter(id=i.id)
-                    print("board views index else if includedsubject for if tempunion :",tempunion)
-                    print("board views index else if includedsubject for if type(tempunion) :",type(tempunion))
-                    boardobj = boardobj.union(tempunion)
+                    print("board views index else if includedsubject for if type(i.id) :",type(i.id)) #ind
+                    try :
+                        tempappendobj = Board.objects.get(id=i.id)
+                        print("board views index else if includedsubject for if tempappendobj :",tempappendobj)
+                        print("board views index else if includedsubject for if type(tempappendobj) :",type(tempappendobj))
+                        #boardobj = boardobj.union(tempunion)
+                        boardobj.append(tempappendobj)
+                    except :
+                        boardobj.append(Board.objects.none())
+            
+            '''
+            for i in boardobj :
+                print("i.id :",i.id)
+                print("type(i.writerops) :",type(i.id))
+                print("i.writerops :",i.writerops)
+                print("type(i.writerops) :",type(i.writerops))
+                print("i.credate :",i.credate)
+                print("type(i.credate) :",type(i.credate))
+                print("i.name :",i.name)
+                print("type(i.name) :",type(i.name))
+                print("i.getthum() :",i.getthum())
+                print("type(i.getthum()) :",type(i.getthum()))
+                print("i.comment :",i.comment)
+                print("type(i.comment) :",type(i.comment))
+                print("i.hits :",i.hits)
+                print("type(i.hits) :",type(i.hits))
+                print("i.public :",i.public)
+                print("type(i.public) :",type(i.public))
+            '''
+
         elif str(keyword) == "includedcontent":
+
             print("board views index if else includedcontent")
-            boardobj = Board.objects.filter(id=0)
+            boardobj = []
             tempobj = Board.objects.all()
             for i in tempobj :
                 if searchword in str(i.comment) :
-                    tempunion = Board.objects.filter(id=i.id)
-                    boardobj = boardobj.union(tempunion)
+                    try :
+                        tempunion = Board.objects.get(id=i.id)
+                    except :
+                        tempunion = Board.objects.none()
+                    boardobj.append(tempunion)
+
+
+
         elif str(keyword) == "includedwritername":
             print("board views index if else includedwritername")
-            boardobj = Board.objects.filter(id=0)
-            userlist = User.objects.filter(id=0)
+            boardobj = []
+            userlist = []
             tempobj = User.objects.all()
             
             for i in tempobj :
                 if str(searchword) in str(i.nickname) :
-                    tempunion = User.objects.filter(id=i.id)
-                    userlist = userlist.union(tempunion)
+                    try :
+                        userlist.append(User.objects.get(id=i.id))
+                    except :
+                        pass
+                    
             for i in userlist :
-                userops = User.objects.get(id=i.id)
-                userwrited = Board.objects.filter(writerops=userops)
-                boardobj = boardobj.union(userwrited)
+                try :
+                    userwrited = Board.objects.get(writerops=userops)
+                    boardobj.append(userwrited)
+                except :
+                    pass
         else : 
             print("board views index if else else")
-            boardobj = Board.objects.none()
+            
 
 
     print("board views index boardobj :",boardobj)
+    print("board views index type(boardobj) :",type(boardobj))
     print("board views index len(boardobj) :",len(boardobj))
 
 
-
+    
     if not order == "" :
         if order == "ascdate":
             print("board views index if if ascdate")
-            boardobj = boardobj.order_by('credate')
+            #boardobj.sort(key= lambda x:x[0],reverse=False)
         elif order == "desdate" :
             print("board views index if if desdate")
-            boardobj = boardobj.order_by('-credate')
+            #boardobj.sort(key= lambda x:x[0],reverse=True)
         if order == "ascid":
             print("board views index if if ascid")
-            boardobj = boardobj.order_by('id')
+            #boardobj.sort(key= lambda x:x[0],reverse=False)
         elif order == "desid" :
             print("board views index if if desid")
-            boardobj = boardobj.order_by('-id')
+            #boardobj = boardobj.order_by('-id')
+            #boardobj = sorted(boardobj , key = lambda x:x["id"])
         
     
     pagedata = Paginator(boardobj, 5)
