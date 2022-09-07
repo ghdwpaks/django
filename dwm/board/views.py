@@ -1,4 +1,4 @@
-
+from django.forms.models import model_to_dict
 from glob import escape
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
@@ -110,45 +110,63 @@ def create(req):
         else :
             return render(req, "board/create.html")
 
+def indexchgops(boardobj) :
+    for i in range(len(boardobj)) :
+        try :
+            boardobj[i]["writerops_id"] = User.objects.get(id=boardobj[i]["writerops_id"])
+        except :
+            boardobj[i]["writerops_id"] = User.objects.get(id=boardobj[i]["writerops"])
+        boardobj[i]["thumbnail"] = (Board.objects.get(id=boardobj[i]['id'])).getthum()
+    return boardobj
+
 def index(req):
     global User
     page = req.GET.get("page",1)
-    print("board views index if GET")
+    print("board views index GET")
     keyword = req.GET.get("keyword","")
     searchword = req.GET.get("searchword","")
     order = req.GET.get("order","desid")
-    print("board views index if 'GET' searchword :",searchword)
-    print("board views index if 'GET' keyword :",keyword)
-    print("board views index if 'GET' order :",order)
-
+    print("board views index 'GET' searchword :",searchword)
+    print("board views index 'GET' keyword :",keyword)
+    print("board views index 'GET' order :",order)
+    
     if str(keyword) == "" :
         print("board views index if ''searchword")
-        boardobj = list(Board.objects.all())
+        print("board views index if type(Board.objects.all().values()) :",type(Board.objects.all().values()))
+        boardobj = list(Board.objects.all().values())#'writerops_id': 1
+        boardobj = indexchgops(boardobj)
     else : 
         if str(keyword) == "subject":
-            print("board views index if else subject")
-            boardobj = list(Board.objects.filter(name=str(searchword)))
+            print("board views index if board views index if else subject")
+            boardobj = list(Board.objects.filter(name=str(searchword)).values())
+            boardobj = indexchgops(boardobj)
         elif str(keyword) == "content":
-            print("board views index if else content")
-            boardobj = list(Board.objects.filter(comment=str(searchword)))
+            print("board views index if board views index if else content")
+            boardobj = list(Board.objects.filter(comment=str(searchword)).values())
+            boardobj = indexchgops(boardobj)
         elif str(keyword) == "writername":
+            print("board views index if board views index if else writername")
             boardobj = []
             writerops = User.objects.filter(nickname=str(searchword))
+            print("board views index if board views index if else writerops :",writerops)
+            print("board views index if board views index if else type(writerops) :",type(writerops))
             for i in writerops :
                 try :
-                    tempappend = Board.objects.get(writerops=i)
-                    boardobj.append(tempappend)
+                    print("i :",i)
+                    print("type(i) :",type(i))
+                    print("Board.objects.filter(writerops=i) :",Board.objects.filter(writerops=i))
+                    print("type(Board.objects.filter(writerops=i)) :",type(Board.objects.filter(writerops=i)))
+                    tempappend = list(Board.objects.filter(writerops=i).values())
+                    print("tempappend :",tempappend)
+                    print("type(tempappend) :",type(tempappend))
+                    boardobj.extend(tempappend)
                 except :
                     pass
+            boardobj = indexchgops(boardobj)
 
             
         
         elif str(keyword) == "includedsubject":
-            '''
-            https://code.djangoproject.com/ticket/28830
-            from django.db.models.utils import list_to_queryset
-            queryset = list_to_queryset(object_list)
-            '''
             print("board views index if else includedsubject")
             
             tempobj = Board.objects.all()
@@ -162,13 +180,14 @@ def index(req):
                     print("board views index else if includedsubject for if i.id :",i.id)
                     print("board views index else if includedsubject for if type(i.id) :",type(i.id)) #ind
                     try :
-                        tempappendobj = Board.objects.get(id=i.id)
+                        tempappendobj = model_to_dict(Board.objects.get(id=i.id))
                         print("board views index else if includedsubject for if tempappendobj :",tempappendobj)
                         print("board views index else if includedsubject for if type(tempappendobj) :",type(tempappendobj))
                         #boardobj = boardobj.union(tempunion)
                         boardobj.append(tempappendobj)
                     except :
                         boardobj.append(Board.objects.none())
+            boardobj = indexchgops(boardobj)
             
             '''
             for i in boardobj :
@@ -197,36 +216,37 @@ def index(req):
             tempobj = Board.objects.all()
             for i in tempobj :
                 if searchword in str(i.comment) :
-                    try :
-                        tempunion = Board.objects.get(id=i.id)
-                    except :
-                        tempunion = Board.objects.none()
+                    tempunion =  model_to_dict(Board.objects.get(id=i.id))
                     boardobj.append(tempunion)
+            boardobj = indexchgops(boardobj)
 
 
 
         elif str(keyword) == "includedwritername":
-            print("board views index if else includedwritername")
+            print("board views index elif includedwritername")
             boardobj = []
             userlist = []
             tempobj = User.objects.all()
-            
             for i in tempobj :
                 if str(searchword) in str(i.nickname) :
                     try :
                         userlist.append(User.objects.get(id=i.id))
                     except :
                         pass
-                    
-            for i in userlist :
-                try :
-                    userwrited = Board.objects.get(writerops=userops)
-                    boardobj.append(userwrited)
-                except :
-                    pass
+            print("board views index elif userlist :",userlist)
+            for j in userlist :
+                print("board views index else elif for j j :",j)
+                print("board views index else elif for j type(j) :",type(j))
+                userwrited = list(Board.objects.filter(writerops=j).values())
+                print("board views index else elif for j userwrited :",userwrited)
+                print("board views index else elif for j type(userwrited) :",type(userwrited))
+                boardobj.extend(userwrited)
+            print("board views index else elif boardobj :",boardobj)
+            print("board views index else elif type(boardobj) :",type(boardobj))
+            boardobj = indexchgops(boardobj)
         else : 
-            print("board views index if else else")
-            
+            print("board views index else else")
+    print("board views index Board.objects.explain() :",Board.objects.explain())
 
 
     print("board views index boardobj :",boardobj)
@@ -239,16 +259,19 @@ def index(req):
         if order == "ascdate":
             print("board views index if if ascdate")
             #boardobj.sort(key= lambda x:x[0],reverse=False)
+            boardobj = sorted(boardobj , key = lambda x:x["credate"],reverse=False)
         elif order == "desdate" :
             print("board views index if if desdate")
             #boardobj.sort(key= lambda x:x[0],reverse=True)
+            boardobj = sorted(boardobj , key = lambda x:x["credate"],reverse=True)
         if order == "ascid":
             print("board views index if if ascid")
             #boardobj.sort(key= lambda x:x[0],reverse=False)
+            boardobj = sorted(boardobj , key = lambda x:x["id"],reverse=False)
         elif order == "desid" :
             print("board views index if if desid")
             #boardobj = boardobj.order_by('-id')
-            #boardobj = sorted(boardobj , key = lambda x:x["id"])
+            boardobj = sorted(boardobj , key = lambda x:x["id"],reverse=True)
         
     
     pagedata = Paginator(boardobj, 5)
@@ -273,18 +296,17 @@ def index(req):
         sublist = []
         for i in boardobj :
             for j in subops :
-                if j.mainuser == i.writerops :
-                    print("dwm views index if if for for if j :",j)
-                    sublist.append(i.writerops.username)
+                #writerops = User.objects.get(id=i["writerops_id"])
+                if j.mainuser == i["writerops_id"] :
+                    sublist.append(i["writerops_id"].username)
                     break
-        for i in range(len(sublist)) :
-            print("dwm views index if if if for sublist[i]:",sublist[i])
+        #for i in range(len(sublist)) : print("board views index if if if for sublist[i]:",sublist[i])
         sublist = set(sublist)
         sublist = list(sublist)
         
-        print("dwm views index if if if keyword",keyword)
-        print("dwm views index if if if searchword",searchword)
-        print("dwm views index if if if order",order)
+        print("board views index if if if keyword",keyword)
+        print("board views index if if if searchword",searchword)
+        print("board views index if if if order",order)
         context = {
             "showsubs" : True,
             "boardobj" : boardobj,

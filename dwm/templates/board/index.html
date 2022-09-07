@@ -53,7 +53,9 @@
         {% if i.public == True %}
             <tr>
                 <td class="text-center align-middle btd">{{ i.id }}</td> 
-                <td class="text-center align-middle btd"><a href="{% url 'board:detail' i.id %}"><img src="{{ i.getthum }}" height="150px"></a></td>
+                <td class="text-center align-middle btd">
+                    <a href="{% url 'board:detail' i.id %}"><img src="{{ i.thumbnail }}" height="150px"></a>
+                </td>
                 <td class="text-center align-middle btd" 
                 {% for j in likeies%}
                     {% if j.likeyboard.id == i.id  %}
@@ -66,15 +68,15 @@
                 <td class="align-middle btd">
                     <a href="{% url 'board:userdetail' i.id %}">
                         {% if showsubs %}
-                            {% if i.writerops.username in sublist%}
+                            {% if i.writerops_id.username in sublist%}
                                 <div style="background-color: yellow;">
-                                    <img src="/media/{{ i.writerops.photo }}" width="100px">
+                                    <img src="/media/{{ i.writerops_id.photo }}" width="100px">
                                 </div>
                             {% else %}
-                                <img src="/media/{{ i.writerops.photo }}" width="100px">
+                                <img src="/media/{{ i.writerops_id.photo }}" width="100px">
                             {% endif %}
                         {% else %}
-                            <img src="/media/{{ i.writerops.photo }}" width="100px">
+                            <img src="/media/{{ i.writerops_id.photo }}" width="100px">
                         {% endif %}
                     </a>
                 </td>
