@@ -11,3 +11,6 @@ def index(req) :
     }
 
     return render(req,"index.html",context)
+    
+def gotoindex(req) :
+    return redirect("testddt:index")

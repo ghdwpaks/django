@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.urls import path
+from django.urls import path , include
 from . import views
 # Create your views here.
 app_name = "board"
@@ -18,6 +18,7 @@ urlpatterns = [
     path('delete/<tr>',views.delete,name="delete"),
     path('reply/<tr>',views.reply,name="reply"),
     path('reply/del/<replytr>/<boardtr>',views.replydel,name="replydel"),
+    path('__debug__/', include('debug_toolbar.urls')),
     path('',views.gotoindex,name="top")
 ]
 

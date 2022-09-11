@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'testddt.apps.TestddtConfig',
+    'mathfilters',
     "debug_toolbar",
 ]
 AUTH_USER_MODEL = "testddt.User"

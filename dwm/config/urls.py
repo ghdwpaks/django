@@ -25,6 +25,6 @@ urlpatterns = [
     path('dwm/',include('dwm.urls')),
     path('shop/',include('shop.urls')),
     path('board/',include('board.urls')),
-    path('',include('dwm.urls')),
     path('__debug__/', include('debug_toolbar.urls')),
+    path('',include('dwm.urls')),
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

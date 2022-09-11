@@ -18,6 +18,7 @@ from django.urls import path,include
 from testddt import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index/',views.index,name="index"),
+    path('testddt/',include('testddt.urls')),
+    path('',include('testddt.urls')),
     path('__debug__/', include('debug_toolbar.urls')),
 ]
