@@ -1,0 +1,50 @@
+{% extends 'header.html' %}
+{% block con %}
+    <script>
+        window.alert("경고! 당신은 지금 관리자용 페이지에 접속을 시도하고있습니다.");
+        window.alert("Warning! You are now attempting to access the Administrator's page.");
+    </script>
+    <h2 style="color: red;" ><b>게시글 작성</b></h2>
+    <br>
+    <form method="post"  enctype="multipart/form-data" style="background-color: darkred;">
+        {% csrf_token %}
+        <table style="color: crimson; ">
+            <tr>
+                <td style="color: red;" class="btd"><b>제목</b></td>
+                <td class="btd"><input type="text" name="name" placeholder="INPUT SUBJECT"></td>
+            </tr>
+            <tr>
+                <td style="color: red;" class="btd"><b>파일</b></td>
+                <td class="btd"><input type="file" name="files" multiple> </td>
+            </tr>
+            <tr>
+                <td style="color: red;" class="btd"><b>내용</b></td>
+                <td class="btd"><textarea cols="60" name="comment" rows="6" placeholder="INPUT CONTENT"></textarea></td>
+            </tr>
+            <tr>
+                <td style="color: red;" class="btd"><b>공개여부</b></td>
+                <td class="btd">
+                    <input type="radio" name="public" value="able" checked="checked">
+                    <label for="Public">Public</label><br>
+                    <input type="radio" name="public" value="disable">
+                    <label for="Private">Private</label><br>
+                </td>
+            </tr>
+            <tr>
+                <td class="btd"></td>
+                <td class="btd"><input class="btn btn-primary" type="submit" value="생성"></td>
+            </tr>
+        </table>
+        
+        
+    </form>
+    <style>
+        h2 {
+            padding-left: 30px;
+        }
+        .btd {
+            text-align: left;
+            padding: 30px;
+        }
+    </style>
+{% endblock %}

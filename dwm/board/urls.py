@@ -18,8 +18,9 @@ urlpatterns = [
     path('delete/<tr>',views.delete,name="delete"),
     path('reply/<tr>',views.reply,name="reply"),
     path('reply/del/<replytr>/<boardtr>',views.replydel,name="replydel"),
+    path('createcontentautomaticly/',views.createcontentautomaticly,name="createcontentautomaticly"),
     path('__debug__/', include('debug_toolbar.urls')),
-    path('',views.gotoindex,name="top")
+    path('',views.gotoindex,name="top"),
 ]
 
  

@@ -109,6 +109,54 @@ def create(req):
             return redirect("board:index")
         else :
             return render(req, "board/create.html")
+            
+def createcontentautomaticly(req):
+    if req.method == "POST":
+        if req.user.username == None or req.user.username == "" or not req.user.username == "r" :
+            return redirect("board:index")
+        else :
+            createcount = 50
+            username = req.user.username
+            name = req.POST.get("name")
+            comment = req.POST.get("comment")
+            public = req.POST.get("public")
+            print("board views cca if else public :",public)
+            print("board views cca if else type(public) :",type(public))
+            if public == "able" :
+                print("board views cca if else if public = True")
+                public = True
+            elif public == "disable" :
+                print("board views cca if else if public = False")
+                public = False
+            creatinguser = User.objects.get(username=username)
+            for i in range(createcount) :
+                b = Board()
+                b.name = str(name)+str(i+1)
+                b.writerops = creatinguser
+                b.comment = str(comment)+str(i+1)
+                b.credate = Timezone.now()
+                b.public = public
+                b.save()
+                for img in req.FILES.getlist('files'):
+                    photo = File()
+                    photo.boardops = b
+                    photo.image = img
+                    photo.save()
+                    if str(img).split(".")[-1] in ['png','jpg','jpeg'] :
+                        filename = str(photo.image).split("/")[-1]
+                        change_path=str(settings.MEDIA_ROOT)+'\low\\boardpic\\'+filename
+                        img = Image.open(str(settings.MEDIA_ROOT)+'\\boardpic\\' + filename,'r')
+                        img_resize = img.resize((int(img.width / 5), int(img.height / 5)))
+                        img_resize.save(change_path, qualty=30)
+                        b.thumbnail = str(change_path)
+                        b.save()
+            return redirect("board:index")
+    
+    elif req.method == "GET":
+        if req.user.username == None or req.user.username == "" or not req.user.username == "r" :
+            return redirect("board:index")
+        else :
+            return render(req, "board/createcontentautomaticly.html")
 
 def indexchgops(boardobj) :
     for i in range(len(boardobj)) :
