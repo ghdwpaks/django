@@ -1,0 +1,17 @@
+# syntax=docker/dockerfile:1
+FROM node:12-alpine
+RUN apk add --no-cache python3
+WORKDIR Users/iron/personalworkspace/django/dwm
+COPY . .
+RUN apk add cmd:pip3
+RUN pip3 install --upgrade pip
+RUN apk add cmd:python3
+RUN pip3 install django
+RUN pip3 install django-mathfilters
+RUN pip3 install django-imagekit
+RUN pip3 install crispy-forms-gds
+RUN pip3 install django-debug-toolbar
+RUN pip3 install Pillow
+RUN pip3 install django-debug-toolbar
+EXPOSE 8000
+CMD ["python3","manage.py","runserver","0.0.0.0:8000"]
